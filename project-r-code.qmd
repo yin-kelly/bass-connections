@@ -12,6 +12,13 @@ transportation_data <- read_csv("datasets/transportation_data.csv")
 social_media_data <- read_csv("datasets/social_media_data.csv")
 study_locations_data <- read_csv("datasets/study_locations_data.csv")
 pet_ownership_data <- read_csv("datasets/pet_ownership_data.csv")
+
+coffee_data <- read_csv("datasets/coffee_consumption.csv")
+recycling_data <- read_csv("datasets/durham_recycling.csv")
+outdoors_data <- read_csv("datasets/nc_outdoor_survey.csv")
+activity_data <- read_csv("datasets/physical_activity.csv")
+sleep_data <- read_csv("datasets/screen_time_sleep.csv")
+spotify_data <- read_csv("datasets/spotify_listening_habits.csv")
 ```
 
 bar chart code:
@@ -21,6 +28,14 @@ bar chart code:
 
 ggplot() + 
   geom_bar() +
+  labs() +
+  theme_minimal()
+```
+Scatter Plot Template:
+```{r}
+#| label: scatter-plot-template
+ggplot() + 
+  geom_point() +
   labs() +
   theme_minimal()
 ```
