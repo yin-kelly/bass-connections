@@ -1,0 +1,5 @@
+customer_group,avg_months_til_churn,avg_bank_balance,num_customers
+Families,30,7000,180
+Seniors,24,5500,150
+Students,18,3000,200
+Working,12,4000,220

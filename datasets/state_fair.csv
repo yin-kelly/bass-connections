@@ -1,0 +1,5 @@
+visitor_type,avg_amount_spent,pct_attending_all_days,ticket_price
+VIP,700,85,50
+General,220,50,30
+Student,320,75,15
+Senior,450,90,10
