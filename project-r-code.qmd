@@ -19,18 +19,25 @@ outdoors_data <- read_csv("datasets/nc_outdoor_survey.csv")
 activity_data <- read_csv("datasets/physical_activity.csv")
 sleep_data <- read_csv("datasets/screen_time_sleep.csv")
 spotify_data <- read_csv("datasets/spotify_listening_habits.csv")
+
+garden_data <- read_csv("datasets/garden.csv")
+college_career_data <- read_csv("datasets/college_career.csv")
+library_data <- read_csv("datasets/library.csv")
+fair_data <- read_csv("datasets/state_fair.csv")
+credit_data <- read_csv("datasets/credit_cards.csv")
+school_supplies_data <- read_csv("datasets/school_supplies.csv")
 ```
 
-bar chart code:
-
+Bar Chart Template:
 ```{r}
 #| label: bar-chart-template
 
 ggplot() + 
   geom_bar() +
-  labs() +
+  labs(x = "Category of [population]", y = "Metric") +
   theme_minimal()
 ```
+
 Scatter Plot Template:
 ```{r}
 #| label: scatter-plot-template
