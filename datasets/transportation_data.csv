@@ -1,0 +1,5 @@
+transportation_method,commute_time_minutes,weekly_cost,distance_miles
+Car,25,50,12
+Bus,45,25,10
+Bike,30,5,5
+Walk,50,0,2
