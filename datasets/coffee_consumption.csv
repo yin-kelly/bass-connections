@@ -1,0 +1,13 @@
+AgeGroup,Measure,Value
+18-29,CupsPerDay,1.4
+30-44,CupsPerDay,1.7
+45-59,CupsPerDay,2.5
+60+,CupsPerDay,1.9
+18-29,PercentDailyDrinkers,37
+30-44,PercentDailyDrinkers,43
+45-59,PercentDailyDrinkers,62
+60+,PercentDailyDrinkers,66
+18-29,MonthlySpending,33
+30-44,MonthlySpending,38
+45-59,MonthlySpending,29
+60+,MonthlySpending,27

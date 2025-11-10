@@ -1,0 +1,13 @@
+TimeOfDay,Measure,Value
+Morning,AvgListeningDuration,38
+Afternoon,AvgListeningDuration,57
+Evening,AvgListeningDuration,72
+Night,AvgListeningDuration,50
+Morning,AvgSongTempo,101
+Afternoon,AvgSongTempo,136
+Evening,AvgSongTempo,74
+Night,AvgSongTempo,60
+Morning,AvgVolumeLevel,53
+Afternoon,AvgVolumeLevel,74
+Evening,AvgVolumeLevel,56
+Night,AvgVolumeLevel,49

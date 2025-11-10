@@ -1,0 +1,13 @@
+PhoneUseHours,Measure,Value
+0-1,AvgSleepDuration,8.3
+1-2,AvgSleepDuration,7.7
+2-3,AvgSleepDuration,6.4
+3+,AvgSleepDuration,6.1
+0-1,AvgSleepQuality,8.7
+1-2,AvgSleepQuality,8.4
+2-3,AvgSleepQuality,6.3
+3+,AvgSleepQuality,5.1
+0-1,PercentFatigue,12
+1-2,PercentFatigue,26
+2-3,PercentFatigue,37
+3+,PercentFatigue,52
