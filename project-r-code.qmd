@@ -1,0 +1,12 @@
+
+bar chart code:
+
+```{r}
+#| label: bar-chart-template
+
+ggplot() + 
+  geom_bar() +
+  labs() +
+  theme_minimal()
+```
+
