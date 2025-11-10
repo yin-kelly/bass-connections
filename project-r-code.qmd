@@ -1,3 +1,18 @@
+```{r}
+#| label: load-pkgs
+#| message: false
+library(tidyverse)
+```
+
+```{r}
+#| label: load-data
+shopping_data <- read_csv("datasets/shopping_habits_data.csv")
+workout_data <- read_csv("datasets/workout_preferences_data.csv")
+transportation_data <- read_csv("datasets/transportation_data.csv")
+social_media_data <- read_csv("datasets/social_media_data.csv")
+study_locations_data <- read_csv("datasets/study_locations_data.csv")
+pet_ownership_data <- read_csv("datasets/pet_ownership_data.csv")
+```
 
 bar chart code:
 
@@ -10,3 +25,30 @@ ggplot() +
   theme_minimal()
 ```
 
+Lollipop chart template:
+
+```{r}
+#| label: lollipop-chart-template
+ggplot() +
+  geom_segment() +
+  geom_point(size = 3) +
+  labs(
+    title = "",
+    x = "",
+    y = ""
+  )
+```
+
+Lollipop chart example:
+
+```{r}
+#| label: lollipop-chart-shopping
+ggplot(shopping_data, aes(x = category, y = purchases_per_month)) +
+  geom_segment(aes(xend = category, yend = 0)) +
+  geom_point(size = 3) +
+  labs(
+    title = "Average Number of Purchases per Month by Category",
+    x = "Average Purchases per Month",
+    y = "Shopping Category"
+  )
+```
