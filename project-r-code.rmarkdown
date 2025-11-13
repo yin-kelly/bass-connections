@@ -28,7 +28,11 @@ credit_data <- read_csv("datasets/credit_cards.csv")
 school_supplies_data <- read_csv("datasets/school_supplies.csv")
 ```
 
+
+
 Bar Chart Template:
+
+
 ```{r}
 #| label: bar-chart-template
 
@@ -38,7 +42,11 @@ ggplot() +
   theme_minimal()
 ```
 
+
+
 Scatter Plot Template:
+
+
 ```{r}
 #| label: scatter-plot-template
 ggplot() + 
@@ -46,7 +54,6 @@ ggplot() +
   labs() +
   theme_minimal()
 ```
-
 
 ```{r}
 
@@ -69,7 +76,11 @@ ggplot(volume_data, aes(x = TimeOfDay, y = Value)) +
   theme_minimal()
 ```
 
+
+
 Lollipop chart template:
+
+
 
 ```{r}
 #| label: lollipop-chart-template
@@ -83,7 +94,11 @@ ggplot() +
   )
 ```
 
+
+
 Lollipop chart example:
+
+
 
 ```{r}
 #| label: lollipop-chart-shopping
@@ -96,3 +111,4 @@ ggplot(shopping_data, aes(x = category, y = purchases_per_month)) +
     y = "Shopping Category"
   )
 ```
+
