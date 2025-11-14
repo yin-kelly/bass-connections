@@ -110,5 +110,5 @@ ggplot(workout_data, aes(x = workout_type, y = time_per_week_minutes)) +
     title = "Average Time Spent per Week by Workout Type",
     x = "Workout Type",
     y = "Time per Week (minutes)"
-  )
+  ) + theme_minimal()
 ```
