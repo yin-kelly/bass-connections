@@ -86,13 +86,13 @@ ggplot() +
 Lollipop chart example:
 
 ```{r}
-#| label: lollipop-chart-shopping
-ggplot(shopping_data, aes(x = category, y = purchases_per_month)) +
-  geom_segment(aes(xend = category, yend = 0)) +
+#| label: lollipop-chart-workout
+ggplot(workout_data, aes(x = workout_type, y = time_per_week_minutes)) +
+  geom_segment(aes(xend = workout_type, yend = 0)) +
   geom_point(size = 3) +
   labs(
-    title = "Average Number of Purchases per Month by Category",
-    x = "Average Purchases per Month",
-    y = "Shopping Category"
+    title = "Average Time Spent per Week by Workout Type",
+    x = "Workout Type",
+    y = "Time per Week (minutes)"
   )
 ```
