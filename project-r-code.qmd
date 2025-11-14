@@ -46,12 +46,13 @@ garden_data |>
   mutate(site_location = ifelse(site_location == "Centralish", 
                                 "Central", site_location)) |>
   ggplot(aes(x = site_location, y = current_volunteer_count)) +
-  geom_col(fill = "steelblue") +
-  labs(x = "Site Location", y = "Volunteers", title = "Current Volunteer Count
-       by Garden Site") +
-  theme_minimal()
+  geom_col(fill = "steelblue", width = 0.7) +
+  scale_y_continuous(breaks = c(0, 25, 50, 75, 100)) +
+  labs(x = "Site Location", y = "Volunteers", 
+  title = "Current Volunteer Count by Garden Site") +
+  theme_classic()
 
-ggsave("garden_barchart.png", device = "png", width = 8, height = 5)
+#ggsave("garden_barchart.png", device = "png", width = 8, height = 5)
 ```
 
 
