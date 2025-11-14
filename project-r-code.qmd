@@ -37,6 +37,23 @@ ggplot() +
   labs(x = "Category of [population]", y = "Metric") +
   theme_minimal()
 ```
+Bar chart example:
+
+```{r}
+#| label: garden-bar-chart
+
+garden_data |>
+  mutate(site_location = ifelse(site_location == "Centralish", 
+                                "Central", site_location)) |>
+  ggplot(aes(x = site_location, y = current_volunteer_count)) +
+  geom_col(fill = "steelblue") +
+  labs(x = "Site Location", y = "Volunteers", title = "Current Volunteer Count
+       by Garden Site") +
+  theme_minimal()
+
+ggsave("garden_barchart.png", device = "png", width = 8, height = 5)
+```
+
 
 Scatter Plot Template:
 ```{r}
@@ -46,7 +63,6 @@ ggplot() +
   labs() +
   theme_minimal()
 ```
-
 
 ```{r}
 
