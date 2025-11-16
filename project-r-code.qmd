@@ -103,12 +103,43 @@ Lollipop chart example:
 
 ```{r}
 #| label: lollipop-chart-workout
+ymax <- max(workout_data$time_per_week_minutes, na.rm = TRUE)
+yupper <- max(200, ceiling(ymax / 50) * 50)
+
 ggplot(workout_data, aes(x = workout_type, y = time_per_week_minutes)) +
-  geom_segment(aes(xend = workout_type, yend = 0)) +
-  geom_point(size = 3) +
+  geom_segment(aes(xend = workout_type, yend = 0),
+               color = "blue", linewidth = 1.8) +
+  geom_point(color = "blue", size = 7) +
   labs(
     title = "Average Time Spent per Week by Workout Type",
     x = "Workout Type",
-    y = "Time per Week (minutes)"
-  ) + theme_minimal()
+    y = "Time per Week\n(minutes)"
+  ) +
+  scale_y_continuous(
+    limits = c(0, yupper),
+    breaks = seq(0, yupper, by = 50),
+    expand = c(0, 0)                # makes lines touch x-axis
+  ) +
+  theme_classic(base_size = 16) +
+  theme(
+    plot.title = element_text(
+      size = 22, 
+      face = "bold", 
+      hjust = 0.5, 
+      margin = margin(t = 20, b = 20)
+    ),
+    axis.text = element_text(size = 14),
+    axis.title.x = element_text(size = 16, margin = margin(t = 20, b = 20)),
+    axis.title.y = element_text(
+      angle = 0,                   # horizontal (right-side-up)
+      vjust = 1,                
+      hjust = 0.5,
+      size = 16,
+      margin = margin(r = 20)
+    ),
+    plot.margin = margin(10, 20, 10, 40)
+  ) +
+  coord_cartesian(clip = "off")
+
+ggsave("workout_lollipop.png", device = "png", width = 14, height = 8)
 ```
