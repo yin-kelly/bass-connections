@@ -54,7 +54,7 @@ garden_data |>
   theme(
     axis.text.x = element_text(size = 14),  # Bigger x-axis labels
     axis.title.x = element_text(size = 16),
-    axis.title.y = element_text(size = 16, angle = 0, vjust = 1, hjust = 0),
+    axis.title.y = element_text(size = 16, angle = 0, vjust = 1.05, hjust = 0),
     plot.title = element_text(face = "bold", hjust = 0.5),
     panel.grid.major = element_blank(),  # Remove major gridlines
     panel.grid.minor = element_blank()   # Remove minor gridlines
