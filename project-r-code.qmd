@@ -73,6 +73,8 @@ ggplot() +
   theme_minimal()
 ```
 
+
+Scatter Plot Example
 ```{r}
 
 volume_data <- spotify_data %>% 
@@ -84,14 +86,29 @@ volume_data <- volume_data %>%
 
 #| label: scatter-plot-template
 ggplot(volume_data, aes(x = TimeOfDay, y = Value)) + 
-  geom_point() +
+  geom_point(color = "blue", size = 4) +
   scale_y_continuous(limits = c(0, 100)) +
   labs(
     title = "Average Volume Level by Time of Day",
     x = "Time of Day",
-    y = "Average Volume Level (dB)"
+    y = "Volume Level\n(dB)"
   ) +
-  theme_minimal()
+  theme_classic() +
+  theme(
+  axis.text.x = element_text(size = 14),
+  axis.title.x = element_text(size = 16),
+  axis.title.y = element_text(size = 16, angle = 0, vjust = 1.05, hjust = 0),
+  plot.title = element_text(
+    face = "bold",
+    hjust = 0.5,
+    size = 18,                       # Bigger title
+    margin = margin(b = 10)          # Adds space *below* the title
+  ),
+  panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank()
+)
+
+
 ```
 
 Lollipop chart template:
