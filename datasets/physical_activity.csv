@@ -3,11 +3,14 @@ Northeast,AvgDailySteps,8200
 Midwest,AvgDailySteps,7500
 South,AvgDailySteps,6800
 West,AvgDailySteps,8400
-Northeast,PercentMeetingGuidelines,64
-Midwest,PercentMeetingGuidelines,58
-South,PercentMeetingGuidelines,53
-West,PercentMeetingGuidelines,69
+Mountain,AvgDailySteps, 8100
+Northeast,PercentStrengthTraining,31
+Midwest,PercentStrengthTraining,28
+South,PercentStrengthTraining,22
+West,PercentStrengthTraining,36
+Mountain,PercentStrengthTraining,29
 Northeast,SedentaryHours,5.7
 Midwest,SedentaryHours,6.1
 South,SedentaryHours,6.8
 West,SedentaryHours,5.8
+Mountain,SedentaryHours,5.5
