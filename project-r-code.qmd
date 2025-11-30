@@ -172,18 +172,126 @@ ggplot(workout_data, aes(x = workout_type, y = time_per_week_minutes)) +
 ggsave("workout_lollipop.png", device = "png", width = 14, height = 8)
 ```
 Sam's Stimuli:
+
+Coffee Data Story
 ```{r}
+#| label: coffee-bar-chart
+
+coffee_data <- coffee_data |>
+  mutate(AgeGroup = factor(AgeGroup, levels = c("18-24", "25-34", "35-44", "45-54", "55+")))
+
+coffee_data |>
+  filter(Measure == "CupsPerDay") |>
+  ggplot(aes(x = AgeGroup, y = Value)) +
+  geom_col(fill = "steelblue", width = 0.4) +
+  scale_y_continuous(breaks = seq(0, 3, 0.5),
+                     expand = expansion(mult = c(0, 0.05))) +
+  labs(x = " ", y = "Avg. Cups / Day", 
+       title = "Avg. Cups of Coffee per Day by Age") +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(size = 14),  
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16, angle = 0, vjust = 1.05, hjust = 0),
+    plot.title = element_text(
+      face = "bold", 
+      hjust = 0.5,
+      size = 18,
+      margin = margin(b = 50)
+    ),
+    axis.ticks.x = element_blank(),
+    panel.grid.major = element_blank(),  
+    panel.grid.minor = element_blank()   
+  )
+
+
+ggsave("coffee_cups_per_day.png", device = "png", width = 8, height = 5)
 
 ```
 
 ```{r}
+#| label: coffee-lollipop
+
+ymax <- max(coffee_data$Value[coffee_data$Measure == "PercentDrinkingBlack"], na.rm = TRUE)
+yupper <- max(50, ceiling(ymax / 10) * 10)  # Round up to nearest 10
+
+coffee_data |>
+  filter(Measure == "PercentDrinkingBlack") |>
+  ggplot(aes(x = AgeGroup, y = Value)) +
+  geom_segment(aes(xend = AgeGroup, yend = 0), color = "blue", linewidth = 1.8) +
+  geom_point(color = "blue", size = 7) +
+  labs(
+    title = "Percent Who Drink Coffee Black by Age",
+    x = " ",
+    y = "% Drinking Black"
+  ) +
+  scale_y_continuous(
+    limits = c(0, yupper),
+    breaks = seq(0, yupper, by = 10),
+    expand = c(0, 0)
+  ) +
+  theme_classic(base_size = 16) +
+  theme(
+    plot.title = element_text(
+      size = 22, 
+      face = "bold", 
+      hjust = 0.5, 
+      margin = margin(t = 20, b = 20)
+    ),
+    axis.text = element_text(size = 14),
+    axis.title.x = element_text(size = 16, margin = margin(t = 20, b = 20)),
+    axis.title.y = element_text(
+      angle = 0,  # horizontal
+      vjust = 1,
+      hjust = 0.5,
+      size = 16,
+      margin = margin(r = 20)
+    ),
+    axis.ticks.x = element_blank(),
+    plot.margin = margin(10, 20, 10, 40)
+  ) +
+  coord_cartesian(clip = "off")
+
+
+ggsave("coffee_%_black_lollipop.png", device = "png", width = 14, height = 8)
+
+
 
 ```
 
 ```{r}
+#| label: coffee-scatter
+
+coffee_data |>
+  filter(Measure == "MonthlySpending") |>
+  ggplot(aes(x = AgeGroup, y = Value)) + 
+  geom_point(color = "blue", size = 7) +
+  scale_y_continuous(limits = c(0, 50)) +
+  labs(
+    title = "Avg. Monthly $ Spent on Coffee by Age",
+    x = " ",
+    y = "Monthly $"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(size = 14),
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16, angle = 0, vjust = 1.05, hjust = 0),
+    plot.title = element_text(
+      face = "bold",
+      hjust = 0.5,
+      size = 18,
+      margin = margin(b = 50)  
+    ),
+    axis.ticks.x = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+ggsave("coffee_$_Scatter.png", device = "png", width = 14, height = 8)
 
 ```
-
+Activity Data Story
 ```{r}
 
 ```
