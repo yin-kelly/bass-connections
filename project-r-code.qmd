@@ -171,3 +171,28 @@ ggplot(workout_data, aes(x = workout_type, y = time_per_week_minutes)) +
 
 ggsave("workout_lollipop.png", device = "png", width = 14, height = 8)
 ```
+Sam's Stimuli:
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
