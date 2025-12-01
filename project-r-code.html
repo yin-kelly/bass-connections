@@ -163,7 +163,7 @@ dbl (1): Value
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>recycling_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"datasets/durham_recycling.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Rows: 12 Columns: 3
+<pre><code>Rows: 9 Columns: 3
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ","
 chr (2): HomeType, Measure
@@ -691,6 +691,127 @@ dbl (2): notebook_price, median_household_income
 </div>
 </div>
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"activity_sedentary_Scatter.png"</span>, <span class="at">device =</span> <span class="st">"png"</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Recycling Data Story</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>recycling_data <span class="sc">|&gt;</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Measure <span class="sc">==</span> <span class="st">"KgRecyclingPerWeek"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> HomeType, <span class="at">y =</span> Value)) <span class="sc">+</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">width =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">1</span>),</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>))) <span class="sc">+</span></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">" "</span>, <span class="at">y =</span> <span class="st">"Kg Recycling"</span>, </span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Avg. Kg of Recycling per Week by Home Type"</span>) <span class="sc">+</span></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),  </span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="fl">1.05</span>, <span class="at">hjust =</span> <span class="dv">0</span>),</span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">face =</span> <span class="st">"bold"</span>, </span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>,</span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">50</span>)</span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),  </span>
+<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()   </span>
+<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project-r-code_files/figure-html/recycling-bar-chart-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"recycling_kg.png"</span>, <span class="at">device =</span> <span class="st">"png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> recycling_data <span class="sc">|&gt;</span> <span class="fu">filter</span>(Measure <span class="sc">==</span> <span class="st">"PercentEnrolled"</span>)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>ymax <span class="ot">&lt;-</span> <span class="fu">max</span>(df<span class="sc">$</span>Value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>yupper <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="dv">50</span>, <span class="fu">ceiling</span>(ymax <span class="sc">/</span> <span class="dv">10</span>) <span class="sc">*</span> <span class="dv">10</span>)</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>recycling_data <span class="sc">|&gt;</span></span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Measure <span class="sc">==</span> <span class="st">"PercentEnrolled"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> HomeType, <span class="at">y =</span> Value)) <span class="sc">+</span></span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">xend =</span> HomeType, <span class="at">yend =</span> <span class="dv">0</span>), <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">linewidth =</span> <span class="fl">1.8</span>) <span class="sc">+</span></span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">size =</span> <span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"% Enrolled in Community Recycling Program by Home Type"</span>,</span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">" "</span>,</span>
+<span id="cb60-15"><a href="#cb60-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"% Enrolled"</span></span>
+<span id="cb60-16"><a href="#cb60-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb60-17"><a href="#cb60-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb60-18"><a href="#cb60-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, yupper),</span>
+<span id="cb60-19"><a href="#cb60-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, yupper, <span class="at">by =</span> <span class="dv">10</span>),</span>
+<span id="cb60-20"><a href="#cb60-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb60-21"><a href="#cb60-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb60-22"><a href="#cb60-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb60-23"><a href="#cb60-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb60-24"><a href="#cb60-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb60-25"><a href="#cb60-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">22</span>, </span>
+<span id="cb60-26"><a href="#cb60-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">face =</span> <span class="st">"bold"</span>, </span>
+<span id="cb60-27"><a href="#cb60-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="fl">0.5</span>, </span>
+<span id="cb60-28"><a href="#cb60-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">20</span>, <span class="at">b =</span> <span class="dv">20</span>)</span>
+<span id="cb60-29"><a href="#cb60-29" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb60-30"><a href="#cb60-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb60-31"><a href="#cb60-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">20</span>, <span class="at">b =</span> <span class="dv">20</span>)),</span>
+<span id="cb60-32"><a href="#cb60-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(</span>
+<span id="cb60-33"><a href="#cb60-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">0</span>,  <span class="co"># horizontal</span></span>
+<span id="cb60-34"><a href="#cb60-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">vjust =</span> <span class="dv">1</span>,</span>
+<span id="cb60-35"><a href="#cb60-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb60-36"><a href="#cb60-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">16</span>,</span>
+<span id="cb60-37"><a href="#cb60-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">20</span>)</span>
+<span id="cb60-38"><a href="#cb60-38" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb60-39"><a href="#cb60-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb60-40"><a href="#cb60-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">10</span>, <span class="dv">40</span>)</span>
+<span id="cb60-41"><a href="#cb60-41" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb60-42"><a href="#cb60-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">clip =</span> <span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project-r-code_files/figure-html/recycling-lollipop-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"recycling_enrollment_lollipop.png"</span>, <span class="at">device =</span> <span class="st">"png"</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>recycling_data <span class="sc">|&gt;</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Measure <span class="sc">==</span> <span class="st">"ContaminationRate"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> HomeType, <span class="at">y =</span> Value)) <span class="sc">+</span> </span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">size =</span> <span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">30</span>)) <span class="sc">+</span></span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Avg. Contamination Rate by Home Type"</span>,</span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">" "</span>,</span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"% Contaminated"</span></span>
+<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb62-13"><a href="#cb62-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb62-14"><a href="#cb62-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb62-15"><a href="#cb62-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="fl">1.05</span>, <span class="at">hjust =</span> <span class="dv">0</span>),</span>
+<span id="cb62-16"><a href="#cb62-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb62-17"><a href="#cb62-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">face =</span> <span class="st">"bold"</span>,</span>
+<span id="cb62-18"><a href="#cb62-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb62-19"><a href="#cb62-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>,</span>
+<span id="cb62-20"><a href="#cb62-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">50</span>)  </span>
+<span id="cb62-21"><a href="#cb62-21" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb62-22"><a href="#cb62-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb62-23"><a href="#cb62-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb62-24"><a href="#cb62-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb62-25"><a href="#cb62-25" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="project-r-code_files/figure-html/recycling-scatter-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"recycling_contam_Scatter.png"</span>, <span class="at">device =</span> <span class="st">"png"</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </main>

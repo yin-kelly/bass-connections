@@ -2,12 +2,9 @@ HomeType,Measure,Value
 Single,KgRecyclingPerWeek,2.4
 Couple,KgRecyclingPerWeek,5.8
 Family,KgRecyclingPerWeek,9.2
-Shared,KgRecyclingPerWeek,7.1
-Single,PercentEnrolled,55
-Couple,PercentEnrolled,78
-Family,PercentEnrolled,90
-Shared,PercentEnrolled,61
+Single,PercentEnrolled,44
+Couple,PercentEnrolled,63
+Family,PercentEnrolled,76
 Single,ContaminationRate,13
 Couple,ContaminationRate,9
 Family,ContaminationRate,6
-Shared,ContaminationRate,18
