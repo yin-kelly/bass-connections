@@ -717,6 +717,140 @@ ggsave("Sleep_quality_lollipop.png", device = "png", width = 8, height = 5)
 ```
 
 ```{r}
+#| label: sleep-scatter
 
+sleep_data |>
+  filter(Measure == "PercentFatigue") |>
+  ggplot(aes(x = PhoneUseHours, y = Value)) + 
+  geom_point(color = "blue", size = 7) +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(
+    title = "% Reporting Fatigue by Hours of Phone Use Before Bed",
+    x = " ",
+    y = "% Fatigued"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(size = 14),
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16, angle = 0, vjust = 1.05, hjust = 0),
+    plot.title = element_text(
+      face = "bold",
+      hjust = 0.5,
+      size = 18,
+      margin = margin(b = 50)  
+    ),
+    axis.ticks.x = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+ggsave("Sleep_fatigue_Scatter.png", device = "png", width = 14, height = 8)
+```
+Outdoor activity data story
+```{r}
+#| label: outdoors-bar
+outdoors_data |>
+  filter(Measure == "AvgHoursOutside") |>
+  ggplot(aes(x = Temperature, y = Value)) +
+  geom_col(fill = "steelblue", width = 0.4) +
+  scale_y_continuous(breaks = seq(0, 10, 1),
+                     expand = expansion(mult = c(0, 0.05))) +
+  labs(x = " ", y = "Hours", 
+       title = "Avg. Hours Outside per Week by Temperature (F)") +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(size = 14),  
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16, angle = 0, vjust = 1.05, hjust = 0),
+    plot.title = element_text(
+      face = "bold", 
+      hjust = 0.5,
+      size = 18,
+      margin = margin(b = 50)
+    ),
+    axis.ticks.x = element_blank(),
+    panel.grid.major = element_blank(),  
+    panel.grid.minor = element_blank()   
+  )
+
+ggsave("Outside_hours_bar.png", device = "png", width = 8, height = 5)
+```
+
+```{r}
+#| label: outdoors-lollipop
+
+df <- outdoors_data |> filter(Measure == "AvgHoursWalking")
+
+outdoors_data |>
+  filter(Measure == "AvgHoursWalking") |>
+  ggplot(aes(x = Temperature, y = Value)) +
+  geom_segment(aes(xend = Temperature, yend = 0), color = "blue", linewidth = 1.8) +
+  geom_point(color = "blue", size = 7) +
+  labs(
+    title = "Avg. Hours Walking Outside per Week by Temperature (F)",
+    x = " ",
+    y = "Hours"
+  ) +
+  scale_y_continuous(
+    limits = c(0, 8),
+    breaks = seq(0, 8, by = 1),
+    expand = c(0, 0)
+  ) +
+  theme_classic(base_size = 16) +
+  theme(
+    plot.title = element_text(
+      size = 22, 
+      face = "bold", 
+      hjust = 0.5, 
+      margin = margin(t = 20, b = 20)
+    ),
+    axis.text = element_text(size = 14),
+    axis.title.x = element_text(size = 16, margin = margin(t = 20, b = 20)),
+    axis.title.y = element_text(
+      angle = 0,  # horizontal
+      vjust = 1,
+      hjust = 0.5,
+      size = 16,
+      margin = margin(r = 20)
+    ),
+    axis.ticks.x = element_blank(),
+    plot.margin = margin(10, 20, 10, 40)
+  ) +
+  coord_cartesian(clip = "off")
+
+ggsave("Outdoors_walking_lollipop.png", device = "png", width = 8, height = 5)
+```
+
+```{r}
+#| label: outdoors-scatter
+
+outdoors_data |>
+  filter(Measure == "AvgOutings") |>
+  ggplot(aes(x = Temperature, y = Value)) + 
+  geom_point(color = "blue", size = 7) +
+  scale_y_continuous(limits = c(0, 5)) +
+  labs(
+    title = "Avg. Outdoor Outings per Week by Temperature (F)",
+    x = " ",
+    y = "Outings"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(size = 14),
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16, angle = 0, vjust = 1.05, hjust = 0),
+    plot.title = element_text(
+      face = "bold",
+      hjust = 0.5,
+      size = 18,
+      margin = margin(b = 50)  
+    ),
+    axis.ticks.x = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+ggsave("Outdoors_outings_Scatter.png", device = "png", width = 14, height = 8)
 ```
 
