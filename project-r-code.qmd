@@ -522,4 +522,122 @@ recycling_data |>
 
 ggsave("recycling_contam_Scatter.png", device = "png", width = 14, height = 8)
 ```
+Spotify data story
+```{r}
+#| label: spotify-bar-chart
+spotify_data <- spotify_data |>
+  mutate(
+    TimeOfDay = factor(TimeOfDay,
+                       levels = c("Morning", "Afternoon", "Night"))
+  )
+
+spotify_data |>
+  filter(Measure == "AvgListeningDuration") |>
+  ggplot(aes(x = TimeOfDay, y = Value)) +
+  geom_col(fill = "steelblue", width = 0.4) +
+  scale_y_continuous(breaks = seq(0, 60, 10),
+                     expand = expansion(mult = c(0, 0.05))) +
+  labs(x = " ", y = "Duration\n(mins)", 
+       title = "Avg. Listening Duration by Time of Day") +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(size = 14),  
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16, angle = 0, vjust = 1.05, hjust = 0),
+    plot.title = element_text(
+      face = "bold", 
+      hjust = 0.5,
+      size = 18,
+      margin = margin(b = 50)
+    ),
+    axis.ticks.x = element_blank(),
+    panel.grid.major = element_blank(),  
+    panel.grid.minor = element_blank()   
+  )
+
+ggsave("Spotify_duration_bar.png", device = "png", width = 8, height = 5)
+
+```
+
+```{r}
+#| label: spotify-lollipop
+
+df <- spotify_data |> filter(Measure == "AvgSongTempo")
+
+ymax <- max(df$Value, na.rm = TRUE)
+yupper <- max(50, ceiling(ymax / 10) * 10)
+
+
+spotify_data |>
+  filter(Measure == "AvgSongTempo") |>
+  ggplot(aes(x = TimeOfDay, y = Value)) +
+  geom_segment(aes(xend = TimeOfDay, yend = 0), color = "blue", linewidth = 1.8) +
+  geom_point(color = "blue", size = 7) +
+  labs(
+    title = "Avg. Song Tempo by Time of Day",
+    x = " ",
+    y = "Tempo\n(bpm)"
+  ) +
+  scale_y_continuous(
+    limits = c(0, yupper),
+    breaks = seq(0, yupper, by = 25),
+    expand = c(0, 0)
+  ) +
+  theme_classic(base_size = 16) +
+  theme(
+    plot.title = element_text(
+      size = 22, 
+      face = "bold", 
+      hjust = 0.5, 
+      margin = margin(t = 20, b = 20)
+    ),
+    axis.text = element_text(size = 14),
+    axis.title.x = element_text(size = 16, margin = margin(t = 20, b = 20)),
+    axis.title.y = element_text(
+      angle = 0,  # horizontal
+      vjust = 1,
+      hjust = 0.5,
+      size = 16,
+      margin = margin(r = 20)
+    ),
+    axis.ticks.x = element_blank(),
+    plot.margin = margin(10, 20, 10, 40)
+  ) +
+  coord_cartesian(clip = "off")
+
+ggsave("Spotify_tempo_lollipop.png", device = "png", width = 8, height = 5)
+
+```
+
+```{r}
+#| label: spotify-scatter
+
+spotify_data |>
+  filter(Measure == "AvgVolumeLevel") |>
+  ggplot(aes(x = TimeOfDay, y = Value)) + 
+  geom_point(color = "blue", size = 7) +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(
+    title = "Avg. Volume Level by Time of Day",
+    x = " ",
+    y = "Volume Level\n(dB)"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(size = 14),
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16, angle = 0, vjust = 1.05, hjust = 0),
+    plot.title = element_text(
+      face = "bold",
+      hjust = 0.5,
+      size = 18,
+      margin = margin(b = 50)  
+    ),
+    axis.ticks.x = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+ggsave("spotify_volume_Scatter.png", device = "png", width = 14, height = 8)
+```
 
