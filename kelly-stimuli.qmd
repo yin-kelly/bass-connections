@@ -1,0 +1,536 @@
+```{r}
+#| label: load-pkgs
+#| message: false
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(grid)
+```
+
+```{r}
+#| label: load-data
+social_media_data <- read_csv("datasets/social_media_data.csv")
+streaming_data <- read_csv("datasets/streaming_data.csv")
+workout_data <- read_csv("datasets/workout_preferences_data.csv")
+transportation_data <- read_csv("datasets/transportation_data.csv")
+pet_data <- read_csv("datasets/pet_ownership_data.csv")
+meals_data <- read_csv("datasets/meals_data.csv")
+```
+
+## FUNCTIONS
+
+```{r}
+#| label: lollipop-chart
+
+# TEMPLATE FUNCTION: LOLLIPOP CHART
+
+create_lollipop_chart <- function(data, 
+                                   category_col, 
+                                   value_col,
+                                   title,
+                                   y_label,
+                                   category_order = NULL,
+                                   y_break_interval = 50,
+                                   color = "steelblue",
+                                   output_file = NULL) {
+  
+  # Prepare the data
+  plot_data <- data |>
+    select(category = {{category_col}}, value = {{value_col}})
+  
+  # Set category order if provided
+  if (!is.null(category_order)) {
+    plot_data <- plot_data |>
+      mutate(category = factor(category, levels = category_order))
+  }
+  
+  # Calculate y-axis upper limit
+  ymax <- max(plot_data$value, na.rm = TRUE)
+  yupper <- ceiling(ymax / y_break_interval) * y_break_interval
+  
+  # Create the plot
+  p <- ggplot(plot_data, aes(x = category, y = value)) +
+    geom_segment(aes(xend = category, yend = 0),
+                 color = color, linewidth = 2.3) +
+    geom_point(color = color, size = 9) +
+    labs(
+      title = title,
+      x = NULL,
+      y = NULL
+    ) +
+    scale_y_continuous(
+      limits = c(0, yupper),
+      breaks = seq(0, yupper, by = y_break_interval),
+      expand = expansion(mult = c(0, 0.05))
+    ) +
+    theme_classic() +
+    theme(
+      plot.title = element_text(
+        size = 16,
+        face = "bold", 
+        vjust = 1,
+        hjust = 0.5, 
+        margin = margin(t = -20, b = 60)  # Increased bottom margin for more space
+      ),
+      plot.margin = margin(45, 40, 25, 40),
+      axis.text.x = element_text(size = 14, color = "black"),
+      axis.text.y = element_text(size = 14, color = "black"),
+      axis.ticks.x = element_blank(),
+      axis.ticks.y = element_line(color = "black"),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    ) +
+    annotation_custom(
+      grob = textGrob(
+        label = y_label, 
+        hjust = 0.5,
+        vjust = -0.9,  # Adjusted to position label with more space from title
+        gp = gpar(fontsize = 14)
+      ),
+      ymin = yupper,
+      ymax = yupper,
+      xmin = 0.5,
+      xmax = 0.5
+    ) +
+    coord_cartesian(clip = "off")
+  
+  # Build the plot and turn off clipping
+  gt <- ggplot_gtable(ggplot_build(p))
+  gt$layout$clip[gt$layout$name == "panel"] <- "off"
+  
+  # Save if output file specified
+  if (!is.null(output_file)) {
+    ggsave(output_file, plot = gt, device = "png", width = 8, height = 5)
+  }
+  
+  # Draw and return
+  grid.draw(gt)
+  invisible(gt)
+}
+```
+
+```{r}
+#| label: bar-chart
+
+# TEMPLATE FUNCTION: BAR CHART
+
+create_bar_chart <- function(data, 
+                              category_col, 
+                              value_col,
+                              title,
+                              y_label,
+                              category_order = NULL,
+                              y_break_interval = 50,
+                              color = "steelblue",
+                              output_file = NULL) {
+  
+  # Prepare the data
+  plot_data <- data |>
+    select(category = {{category_col}}, value = {{value_col}})
+  
+  # Set category order if provided
+  if (!is.null(category_order)) {
+    plot_data <- plot_data |>
+      mutate(category = factor(category, levels = category_order))
+  }
+  
+  # Calculate y-axis upper limit
+  ymax <- max(plot_data$value, na.rm = TRUE)
+  yupper <- ceiling(ymax / y_break_interval) * y_break_interval
+  
+  # Create the plot
+  p <- ggplot(plot_data, aes(x = category, y = value)) +
+    geom_col(fill = color, width = 0.7) +
+    labs(
+      title = title,
+      x = NULL,
+      y = NULL
+    ) +
+    scale_y_continuous(
+      limits = c(0, yupper),
+      breaks = seq(0, yupper, by = y_break_interval),
+      expand = expansion(mult = c(0, 0.05))
+    ) +
+    theme_classic() +
+    theme(
+      plot.title = element_text(
+        size = 16,
+        face = "bold", 
+        vjust = 1,
+        hjust = 0.5, 
+        margin = margin(t = -20, b = 60)  # Increased bottom margin for more space
+      ),
+      plot.margin = margin(45, 40, 25, 40),
+      axis.text.x = element_text(size = 14, color = "black"),
+      axis.text.y = element_text(size = 14, color = "black"),
+      axis.ticks.x = element_blank(),
+      axis.ticks.y = element_line(color = "black"),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    ) +
+    annotation_custom(
+      grob = textGrob(
+        label = y_label, 
+        hjust = 0.5,
+        vjust = -0.9,  # Adjusted to position label with more space from title
+        gp = gpar(fontsize = 14)
+      ),
+      ymin = yupper,
+      ymax = yupper,
+      xmin = 0.5,
+      xmax = 0.5
+    ) +
+    coord_cartesian(clip = "off")
+  
+  # Build the plot and turn off clipping
+  gt <- ggplot_gtable(ggplot_build(p))
+  gt$layout$clip[gt$layout$name == "panel"] <- "off"
+  
+  # Save if output file specified
+  if (!is.null(output_file)) {
+    ggsave(output_file, plot = gt, device = "png", width = 8, height = 5)
+  }
+  
+  # Draw and return
+  grid.draw(gt)
+  invisible(gt)
+}
+```
+
+```{r}
+#| label: dot-plot
+
+# TEMPLATE FUNCTION: DOT PLOT
+
+create_dot_plot <- function(data, 
+                             category_col, 
+                             value_col,
+                             title,
+                             y_label,
+                             category_order = NULL,
+                             y_break_interval = 0.5,
+                             color = "steelblue",
+                             output_file = NULL) {
+  
+  # Prepare the data
+  plot_data <- data |>
+    select(category = {{category_col}}, value = {{value_col}})
+  
+  # Set category order if provided
+  if (!is.null(category_order)) {
+    plot_data <- plot_data |>
+      mutate(category = factor(category, levels = category_order))
+  }
+  
+  # Calculate y-axis upper limit
+  ymax <- max(plot_data$value, na.rm = TRUE)
+  yupper <- ceiling(ymax / y_break_interval) * y_break_interval
+  
+  # Create the plot
+  p <- ggplot(plot_data, aes(x = category, y = value)) +
+    geom_point(color = color, size = 9) +
+    labs(
+      title = title,
+      x = NULL,
+      y = NULL
+    ) +
+    scale_y_continuous(
+      limits = c(0, yupper),
+      breaks = seq(0, yupper, by = y_break_interval),
+      expand = expansion(mult = c(0, 0.05))
+    ) +
+    theme_classic() +
+    theme(
+      plot.title = element_text(
+        size = 16,
+        face = "bold", 
+        vjust = 1,
+        hjust = 0.5, 
+        margin = margin(t = -20, b = 60)  # Increased bottom margin for more space
+      ),
+      plot.margin = margin(45, 40, 25, 40),
+      axis.text.x = element_text(size = 14, color = "black"),
+      axis.text.y = element_text(size = 14, color = "black"),
+      axis.ticks.x = element_blank(),
+      axis.ticks.y = element_line(color = "black"),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    ) +
+    annotation_custom(
+      grob = textGrob(
+        label = y_label, 
+        hjust = 0.5,
+        vjust = -0.9,  # Adjusted to position label with more space from title
+        gp = gpar(fontsize = 14)
+      ),
+      ymin = yupper,
+      ymax = yupper,
+      xmin = 0.5,
+      xmax = 0.5
+    ) +
+    coord_cartesian(clip = "off")
+  
+  # Build the plot and turn off clipping
+  gt <- ggplot_gtable(ggplot_build(p))
+  gt$layout$clip[gt$layout$name == "panel"] <- "off"
+  
+  # Save if output file specified
+  if (!is.null(output_file)) {
+    ggsave(output_file, plot = gt, device = "png", width = 8, height = 5)
+  }
+  
+  # Draw and return
+  grid.draw(gt)
+  invisible(gt)
+}
+```
+
+```{r}
+#| label: social-media-stimuli
+# Chart 1: Lollipop - Time per day
+create_lollipop_chart(
+  data = social_media_data,
+  category_col = platform_type,
+  value_col = time_per_day_minutes,
+  title = "Daily Time Spent by Platform Type",
+  y_label = "Time\n(minutes)",
+  y_break_interval = 20,
+  color = "#6B8E96",
+  output_file = "kelly-stimuli-pngs/social_lollipop.png"
+)
+
+# Chart 2: Bar - Posts per week
+create_bar_chart(
+  data = social_media_data,
+  category_col = platform_type,
+  value_col = posts_per_week,
+  title = "Weekly Posts by Platform Type",
+  y_label = "Posts per\nWeek",
+  y_break_interval = 20,
+  color = "#6B8E96",
+  output_file = "kelly-stimuli-pngs/social_bar.png"
+)
+
+# Chart 3: Dot - Connections
+create_dot_plot(
+  data = social_media_data,
+  category_col = platform_type,
+  value_col = connections,
+  title = "Connections by Platform Type",
+  y_label = "Number of\nConnections",
+  y_break_interval = 100,
+  color = "#6B8E96",
+  output_file = "kelly-stimuli-pngs/social_dot.png"
+)
+```
+
+```{r}
+#| label: streaming-stimuli
+# Chart 1: Bar - Episodes per session
+create_bar_chart(
+  data = streaming_data,
+  category_col = content_type,
+  value_col = episodes_per_session,
+  title = "Episodes Watched per Binge Session by Content Type",
+  y_label = "Number of\nEpisodes",
+  y_break_interval = 2,
+  color = "#7D6B7D",
+  output_file = "kelly-stimuli-pngs/streaming_bar.png"
+)
+
+# Chart 2: Dot - Total hours weekly
+create_dot_plot(
+  data = streaming_data,
+  category_col = content_type,
+  value_col = total_hours_weekly,
+  title = "Total Weekly Viewing Hours by Content Type",
+  y_label = "Hours per\nWeek",
+  y_break_interval = 2,
+  color = "#7D6B7D",
+  output_file = "kelly-stimuli-pngs/streaming_dot.png"
+)
+
+# Chart 3: Lollipop - Days to finish series
+create_lollipop_chart(
+  data = streaming_data,
+  category_col = content_type,
+  value_col = days_to_finish_series,
+  title = "Average Days to Complete a Series by Content Type",
+  y_label = "Number of\nDays",
+  y_break_interval = 2,
+  color = "#7D6B7D",
+  output_file = "kelly-stimuli-pngs/streaming_lollipop.png"
+)
+```
+
+
+``` {r}
+#| label: workout-stimuli
+
+# Define category order
+category_order <- c("Cardio", "Strength Training", "Yoga", "Sports/Classes")
+
+# Create lollipop chart for time per week
+create_lollipop_chart(
+  data = workout_data,
+  category_col = workout_type,
+  value_col = time_per_week_minutes,
+  title = "Average Time Spent Working Out by Workout Type",
+  y_label = "Time per Week\n(minutes)",
+  category_order = category_order,
+  y_break_interval = 50,
+  color = "steelblue",
+  output_file = "kelly-stimuli-pngs/workout_lollipop.png"
+)
+
+# Create bar chart for calories per session
+create_bar_chart(
+  data = workout_data,
+  category_col = workout_type,
+  value_col = calories_per_session,
+  title = "Average Calories Burned per Session by Workout Type",
+  y_label = "Number of\nCalories",
+  category_order = category_order,
+  y_break_interval = 100,
+  color = "steelblue",
+  output_file = "kelly-stimuli-pngs/workout_bar.png"
+)
+
+# Create dot plot for sessions per week
+create_dot_plot(
+  data = workout_data,
+  category_col = workout_type,
+  value_col = sessions_per_week,
+  title = "Average Sessions per Week by Workout Type",
+  y_label = "Number of\nSessions",
+  category_order = category_order,
+  y_break_interval = 1,
+  color = "steelblue",
+  output_file = "kelly-stimuli-pngs/workout_dot.png"
+)
+```
+
+```{r}
+#| label: transportation-stimuli
+# Chart 1: Lollipop - Commute time
+create_lollipop_chart(
+  data = transportation_data,
+  category_col = transportation_method,
+  value_col = commute_time_minutes,
+  title = "Commute Time by Transportation Method",
+  y_label = "Time\n(minutes)",
+  y_break_interval = 10,
+  color = "#6B8E7D",
+  output_file = "kelly-stimuli-pngs/transport_lollipop.png"
+)
+
+# Chart 2: Bar - Weekly cost
+create_bar_chart(
+  data = transportation_data,
+  category_col = transportation_method,
+  value_col = weekly_cost,
+  title = "Weekly Cost by Transportation Method",
+  y_label = "Cost\n(Dollars)",
+  y_break_interval = 10,
+  color = "#6B8E7D",
+  output_file = "kelly-stimuli-pngs/transport_bar.png"
+)
+
+# Chart 3: Dot - Distance
+create_dot_plot(
+  data = transportation_data,
+  category_col = transportation_method,
+  value_col = distance_miles,
+  title = "Distance Traveled by Transportation Method",
+  y_label = "Distance\n(miles)",
+  y_break_interval = 2,
+  color = "#6B8E7D",
+  output_file = "kelly-stimuli-pngs/transport_dot.png"
+)
+```
+
+
+```{r}
+#| label: pet-stimuli
+
+# Chart 1: Bar - Monthly cost
+create_bar_chart(
+  data = pet_data,
+  category_col = pet_type,
+  value_col = monthly_cost,
+  title = "Monthly Cost by Pet Type",
+  y_label = "Cost\n(Dollars)",
+  y_break_interval = 50,
+  color = "#9B7E6B",
+  output_file = "kelly-stimuli-pngs/pet_bar.png"
+)
+
+# Chart 2: Lollipop - Daily care minutes
+create_lollipop_chart(
+  data = pet_data,
+  category_col = pet_type,
+  value_col = daily_care_minutes,
+  title = "Daily Care Time by Pet Type",
+  y_label = "Time\n(minutes)",
+  y_break_interval = 20,
+  color = "#9B7E6B",
+  output_file = "kelly-stimuli-pngs/pet_lollipop.png"
+)
+
+# Chart 3: Dot - Vet visits per year
+create_dot_plot(
+  data = pet_data,
+  category_col = pet_type,
+  value_col = vet_visits_per_year,
+  title = "Annual Vet Visits by Pet Type",
+  y_label = "Number of\nVisits",
+  y_break_interval = 1,
+  color = "#9B7E6B",
+  output_file = "kelly-stimuli-pngs/pet_dot.png"
+)
+```
+
+```{r}
+#| label: meals-stimuli
+
+meals_order <- c("Breakfast", "Lunch", "Dinner", "Snacks", "Dessert")
+
+# Chart 1: Dot - Prep time
+create_dot_plot(
+  data = meals_data,
+  category_col = meal_type,
+  value_col = prep_time_minutes,
+  title = "Preparation Time by Meal Type",
+  y_label = "Prep Time\n(minutes)",
+  category_order = meals_order,
+  y_break_interval = 10,
+  color = "#A67C8B",
+  output_file = "kelly-stimuli-pngs/meals_dot.png"
+)
+
+# Chart 2: Bar - Cost per serving
+create_bar_chart(
+  data = meals_data,
+  category_col = meal_type,
+  value_col = cost_per_serving,
+  title = "Cost per Serving by Meal Type",
+  y_label = "Cost per\nServing ($)",
+  category_order = meals_order,
+  y_break_interval = 2,
+  color = "#A67C8B",
+  output_file = "kelly-stimuli-pngs/meals_bar.png"
+)
+
+# Chart 3: Lollipop - Servings per week
+create_lollipop_chart(
+  data = meals_data,
+  category_col = meal_type,
+  value_col = servings_per_week,
+  title = "Servings per Week by Meal Type",
+  y_label = "Servings\nper Week",
+  category_order = meals_order,
+  y_break_interval = 2,
+  color = "#A67C8B",
+  output_file = "kelly-stimuli-pngs/meals_lollipop.png"
+)
+```

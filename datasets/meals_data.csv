@@ -1,0 +1,6 @@
+meal_type,prep_time_minutes,cost_per_serving,servings_per_week
+Breakfast,15,3.50,7
+Lunch,25,5.25,6
+Dinner,45,7.80,5
+Snacks,8,2.10,10
+Dessert,30,4.25,3

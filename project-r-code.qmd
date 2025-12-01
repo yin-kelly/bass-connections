@@ -6,11 +6,9 @@ library(tidyverse)
 
 ```{r}
 #| label: load-data
-shopping_data <- read_csv("datasets/shopping_habits_data.csv")
 workout_data <- read_csv("datasets/workout_preferences_data.csv")
 transportation_data <- read_csv("datasets/transportation_data.csv")
 social_media_data <- read_csv("datasets/social_media_data.csv")
-study_locations_data <- read_csv("datasets/study_locations_data.csv")
 pet_ownership_data <- read_csv("datasets/pet_ownership_data.csv")
 
 coffee_data <- read_csv("datasets/coffee_consumption.csv")
