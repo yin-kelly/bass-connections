@@ -3,6 +3,7 @@ title: "Stims"
 format: html
 editor: visual
 ---
+
 ```{r}
 #| label: load-pkgs
 #| message: false
@@ -11,7 +12,6 @@ library(ggplot2)
 library(dplyr)
 library(grid)
 ```
-
 
 ```{r}
 #| label: load-data
@@ -24,6 +24,7 @@ sleep_data <- read_csv("datasets/screen_time_sleep.csv")
 spotify_data <- read_csv("datasets/spotify_listening_habits.csv")
 
 ```
+
 ```{r}
 #| label: lollipop-chart
 create_lollipop_chart <- function(data, 
@@ -85,7 +86,6 @@ create_lollipop_chart <- function(data,
 }
 ```
 
-
 ```{r}
 #| label: dot-plot
 create_dot_plot <- function(data,
@@ -144,7 +144,6 @@ create_dot_plot <- function(data,
   grid.draw(gt)
 }
 ```
-
 
 ```{r}
 #| label: bar-chart
@@ -205,7 +204,6 @@ create_bar_chart <- function(data,
 }
 ```
 
-
 ```{r}
 #| label: recycling-stimuli
 home_order <- c("Single", "Couple", "Family")
@@ -248,9 +246,6 @@ create_dot_plot(
 ggsave("sam-stimuli-pngs/recycling_dot.png")
 
 ```
-
-
-
 
 ```{r}
 #| label: coffee-stimuli
@@ -298,7 +293,6 @@ ggsave("sam-stimuli-pngs/coffee_dot.png")
 
 ```
 
-
 ```{r}
 #| label: activity-stimuli
 region_order <- c("Northeast", "Midwest", "South", "West", "Mountain")
@@ -337,7 +331,6 @@ create_dot_plot(
 )
 
 ```
-
 
 ```{r}
 #| label: spotify-stimuli
@@ -382,8 +375,6 @@ create_dot_plot(
 
 ```
 
-
-
 ```{r}
 #| label: screen-time-stimuli
 
@@ -426,7 +417,6 @@ create_dot_plot(
 )
 
 ```
-
 
 ```{r}
 #| label: outdoors-stimuli
