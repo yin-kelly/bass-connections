@@ -140,7 +140,7 @@ create_bar_chart <- function(data,
   
   # Create the plot
   p <- ggplot(plot_data, aes(x = category, y = value)) +
-    geom_col(fill = color, width = 0.7) +
+    geom_col(fill = color, width = 0.4) +
     labs(
       title = title,
       x = NULL,
