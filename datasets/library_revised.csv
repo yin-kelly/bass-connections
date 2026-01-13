@@ -1,0 +1,6 @@
+age_range,num_cardholders,avg_books_checked_out,digital_usage_rate
+0-12,1200,6,0.4
+13-17,900,4,0.55
+18-35,3500,5,0.75
+36-60,2800,7,0.6
+60+,1500,8,0.35

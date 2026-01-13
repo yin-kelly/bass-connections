@@ -1,0 +1,4 @@
+Category,AvgMonthsTillChurn,AvgMonthlySpend,AvgAccountBalance,ChurnRate,NumCustomers
+Families,28,900,45000,0.08,130000
+Seniors,32,700,38000,0.06,90000
+Students,10,250,6000,0.22,55000
