@@ -2,7 +2,7 @@ AgeGroup,Measure,Value
 18-24,CupsPerDay,1.4
 25-34,CupsPerDay,1.7
 35-44,CupsPerDay,2.2
-45-54,CupsPerDay,2.8
+45-54,CupsPerDay,2.4
 55+,CupsPerDay,1.9
 18-24,PercentDrinkingBlack,18
 25-34,PercentDrinkingBlack,21
@@ -12,5 +12,5 @@ AgeGroup,Measure,Value
 18-24,MonthlySpending,33
 25-34,MonthlySpending,38
 35-44,MonthlySpending,35
-45-54,MonthlySpending,28
+45-54,MonthlySpending,32
 55+,MonthlySpending,24
