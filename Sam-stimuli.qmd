@@ -70,7 +70,7 @@ create_lollipop_chart <- function(data,
     ) +
     annotation_custom(
       grob = textGrob(y_label, gp = gpar(fontsize = 14)),
-      ymin = yupper * 1.15, ymax = yupper * 1.15, xmin = 0.5, xmax = 0.5
+      ymin = yupper * 1.20, ymax = yupper * 1.20, xmin = 0.5, xmax = 0.5
     ) +
     coord_cartesian(clip = "off")
 
@@ -130,7 +130,7 @@ create_dot_plot <- function(data,
     ) +
     annotation_custom(
       grob = textGrob(y_label, gp = gpar(fontsize = 14)),
-      ymin = yupper * 1.15, ymax = yupper * 1.15, xmin = 0.5, xmax = 0.5
+      ymin = yupper * 1.20, ymax = yupper * 1.20, xmin = 0.5, xmax = 0.5
     ) +
     coord_cartesian(clip = "off")
 
@@ -170,7 +170,7 @@ create_bar_chart <- function(data,
   yupper <- ceiling(ymax / y_break_interval) * y_break_interval
 
   p <- ggplot(plot_data, aes(x = category, y = value)) +
-    geom_col(fill = color, width = 0.7) +
+    geom_col(fill = color, width = 0.4) +
     labs(title = title, x = NULL, y = NULL) +
     scale_y_continuous(
       limits = c(0, yupper),
@@ -190,7 +190,7 @@ create_bar_chart <- function(data,
     ) +
     annotation_custom(
       grob = textGrob(y_label, gp = gpar(fontsize = 14)),
-      ymin = yupper * 1.15, ymax = yupper * 1.15, xmin = 0.5, xmax = 0.5
+      ymin = yupper * 1.20, ymax = yupper * 1.20, xmin = 0.5, xmax = 0.5
     ) +
     coord_cartesian(clip = "off")
 
@@ -269,12 +269,12 @@ p1 <- create_bar_chart(
 )
 ggsave("sam-stimuli-pngs/coffee_bar.png")
 
-# Percent Who Drink Coffee Black by Age
+# Percent Who Drink Black Coffee by Age
 p2 <- create_lollipop_chart(
   data = coffee_data |> filter(Measure == "PercentDrinkingBlack"),
   category_col = AgeGroup,
   value_col = Value,
-  title = "Percent Who Drink Coffee Black by Age",
+  title = "Percent Who Drink Black Coffee by Age",
   y_label = "% Drinking\nBlack",
   category_order = age_order,
   y_break_interval = 10,
