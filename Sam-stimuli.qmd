@@ -70,7 +70,7 @@ create_lollipop_chart <- function(data,
     ) +
     annotation_custom(
       grob = textGrob(y_label, gp = gpar(fontsize = 14)),
-      ymin = yupper * 1.15, ymax = yupper * 1.15, xmin = 0.5, xmax = 0.5
+      ymin = yupper * 1.20, ymax = yupper * 1.20, xmin = 0.5, xmax = 0.5
     ) +
     coord_cartesian(clip = "off")
 
@@ -130,7 +130,7 @@ create_dot_plot <- function(data,
     ) +
     annotation_custom(
       grob = textGrob(y_label, gp = gpar(fontsize = 14)),
-      ymin = yupper * 1.15, ymax = yupper * 1.15, xmin = 0.5, xmax = 0.5
+      ymin = yupper * 1.20, ymax = yupper * 1.20, xmin = 0.5, xmax = 0.5
     ) +
     coord_cartesian(clip = "off")
 
@@ -170,7 +170,7 @@ create_bar_chart <- function(data,
   yupper <- ceiling(ymax / y_break_interval) * y_break_interval
 
   p <- ggplot(plot_data, aes(x = category, y = value)) +
-    geom_col(fill = color, width = 0.7) +
+    geom_col(fill = color, width = 0.4) +
     labs(title = title, x = NULL, y = NULL) +
     scale_y_continuous(
       limits = c(0, yupper),
@@ -190,7 +190,7 @@ create_bar_chart <- function(data,
     ) +
     annotation_custom(
       grob = textGrob(y_label, gp = gpar(fontsize = 14)),
-      ymin = yupper * 1.15, ymax = yupper * 1.15, xmin = 0.5, xmax = 0.5
+      ymin = yupper * 1.20, ymax = yupper * 1.20, xmin = 0.5, xmax = 0.5
     ) +
     coord_cartesian(clip = "off")
 
@@ -209,14 +209,14 @@ create_bar_chart <- function(data,
 ```{r}
 #| label: recycling-stimuli
 home_order <- c("Single", "Couple", "Family")
-muted_yellow <- "#F2E6A7"
+muted_yellow <- "#C4A052"
 
 create_bar_chart(
   data = recycling_data |> filter(Measure == "PercentEnrolled"),
   category_col = HomeType,
   value_col = Value,
-  title = "Recycling Program Enrollment",
-  y_label = "Percent enrolled",
+  title = "Recycling Program Enrollment by Household Type",
+  y_label = "% enrolled",
   category_order = home_order,
   y_break_interval = 10,
   color = muted_yellow
@@ -228,7 +228,7 @@ create_lollipop_chart(
   category_col = HomeType,
   value_col = Value,
   title = "Weekly Recycling by Household Type",
-  y_label = "Kg per week",
+  y_label = "Recycling per\nweek (Kg)",
   category_order = home_order,
   y_break_interval = 2,
   color = muted_yellow
@@ -239,8 +239,8 @@ create_dot_plot(
   data = recycling_data |> filter(Measure == "ContaminationRate"),
   category_col = HomeType,
   value_col = Value,
-  title = "Recycling Contamination Rate",
-  y_label = "Percent contaminated",
+  title = "Recycling Contamination Rate by Household Type",
+  y_label = "% contaminated",
   category_order = home_order,
   y_break_interval = 2,
   color = muted_yellow
@@ -269,12 +269,12 @@ p1 <- create_bar_chart(
 )
 ggsave("sam-stimuli-pngs/coffee_bar.png")
 
-# Percent Who Drink Coffee Black by Age
+# Percent Who Drink Black Coffee by Age
 p2 <- create_lollipop_chart(
   data = coffee_data |> filter(Measure == "PercentDrinkingBlack"),
   category_col = AgeGroup,
   value_col = Value,
-  title = "Percent Who Drink Coffee Black by Age",
+  title = "Percent Who Drink Black Coffee by Age",
   y_label = "% Drinking\nBlack",
   category_order = age_order,
   y_break_interval = 10,
@@ -301,7 +301,7 @@ ggsave("sam-stimuli-pngs/coffee_dot.png")
 
 ```{r}
 #| label: activity-stimuli
-region_order <- c("Northeast", "Midwest", "South", "West", "Mountain")
+region_order <- c("Northeast", "Midwest", "South", "Mountain", "Pacific")
 create_bar_chart(
   data = activity_data |> filter(Measure == "AvgDailySteps"),
   category_col = Location,
@@ -317,7 +317,7 @@ create_lollipop_chart(
   data = activity_data |> filter(Measure == "PercentStrengthTraining"),
   category_col = Location,
   value_col = Value,
-  title = "Percent Who Strength Train by U.S. Region",
+  title = "Percent of Population Who Strength Train by U.S. Region",
   y_label = "% Who\nStrength Train",
   category_order = region_order,
   y_break_interval = 5,
@@ -348,7 +348,7 @@ create_bar_chart(
   data = spotify_data |> filter(Measure == "AvgListeningDuration"),
   category_col = TimeOfDay,
   value_col = Value,
-  title = "Average Spotify Listening Duration by Time of Day",
+  title = "Average Minutes of Spotify Listening by Time of Day",
   y_label = "Duration\n(minutes)",
   category_order = time_order,
   y_break_interval = 10,
@@ -372,7 +372,7 @@ create_dot_plot(
   data = spotify_data |> filter(Measure == "AvgVolumeLevel"),
   category_col = TimeOfDay,
   value_col = Value,
-  title = "Average Listening Volume by Time of Day",
+  title = "Average Audio Volume Level by Time of Day",
   y_label = "Volume\n(dB)",
   category_order = time_order,
   y_break_interval = 10,
@@ -430,15 +430,14 @@ create_dot_plot(
 
 ```{r}
 #| label: outdoors-stimuli
-
 temp_order <- c("<50", "50-70", "70-85", "85+")
 
 create_bar_chart(
   data = outdoors_data |> filter(Measure == "AvgHoursOutside"),
   category_col = Temperature,
   value_col = Value,
-  title = "Average Hours Spent Outside by Temperature",
-  y_label = "Hours Outside",
+  title = "Average Hours Spent Outside per Week by Temperature",
+  y_label = "Hours per\nWeek",
   category_order = temp_order,
   y_break_interval = 1,
   color = "#2A9D8F",
@@ -446,28 +445,27 @@ create_bar_chart(
 )
 
 create_lollipop_chart(
-  data = outdoors_data |> filter(Measure == "AvgHoursWalking"),
+  data = outdoors_data |> filter(Measure == "PercentEnjoyOutdoors"),
   category_col = Temperature,
   value_col = Value,
-  title = "Average Hours Walking by Temperature",
-  y_label = "Hours Walking",
+  title = "Percent of Population Who Enjoy Outdoor Activities by Temperature",
+  y_label = "% of\nPopulation",
   category_order = temp_order,
-  y_break_interval = 1,
+  y_break_interval = 10,
   color = "#2A9D8F",
-  output_file = "sam-stimuli-pngs/outdoors_walking_lollipop.png"
+  output_file = "sam-stimuli-pngs/outdoors_enjoyment_lollipop.png"
 )
 
 create_dot_plot(
-  data = outdoors_data |> filter(Measure == "AvgOutings"),
+  data = outdoors_data |> filter(Measure == "MonthlyGearSpending"),
   category_col = Temperature,
   value_col = Value,
-  title = "Average Number of Outdoor Outings by Temperature",
-  y_label = "Number of Outings",
+  title = "Average Monthly Spending on Outdoor Gear by Temperature",
+  y_label = "Monthly\nDollars",
   category_order = temp_order,
-  y_break_interval = 1,
+  y_break_interval = 10,
   color = "#2A9D8F",
-  output_file = "sam-stimuli-pngs/outdoors_outings_dot.png"
+  output_file = "sam-stimuli-pngs/outdoors_spending_dot.png"
 )
-
 ```
 

@@ -2,15 +2,15 @@ Location,Measure,Value
 Northeast,AvgDailySteps,8200
 Midwest,AvgDailySteps,7500
 South,AvgDailySteps,6800
-West,AvgDailySteps,8400
-Mountain,AvgDailySteps, 8100
+Mountain,AvgDailySteps,8100
+Pacific,AvgDailySteps,8400
 Northeast,PercentStrengthTraining,31
 Midwest,PercentStrengthTraining,28
 South,PercentStrengthTraining,22
-West,PercentStrengthTraining,36
 Mountain,PercentStrengthTraining,29
-Northeast,SedentaryHours,5.7
-Midwest,SedentaryHours,6.1
+Pacific,PercentStrengthTraining,36
+Northeast,SedentaryHours,5.5
+Midwest,SedentaryHours,6.0
 South,SedentaryHours,6.8
-West,SedentaryHours,5.8
-Mountain,SedentaryHours,5.5
+Mountain,SedentaryHours,5.6
+Pacific,SedentaryHours,5.3

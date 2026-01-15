@@ -1,0 +1,13 @@
+ReadingCategory,Measure,Value
+None,AvgBooksPerMonth,0.2
+1-5 hrs,AvgBooksPerMonth,1.8
+6-10 hrs,AvgBooksPerMonth,3.2
+11+ hrs,AvgBooksPerMonth,4.5
+None,PercentReportingStress,58
+1-5 hrs,PercentReportingStress,42
+6-10 hrs,PercentReportingStress,28
+11+ hrs,PercentReportingStress,18
+None,MonthlyBookSpending,5
+1-5 hrs,MonthlyBookSpending,28
+6-10 hrs,MonthlyBookSpending,45
+11+ hrs,MonthlyBookSpending,62
