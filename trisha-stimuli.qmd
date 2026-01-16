@@ -450,7 +450,7 @@ create_lollipop_chart(
   title = "Average Produce Handled per Volunteer by Garden Site",
   y_label = "Average Produce\n(kg) Per Volunteer",
   y_break_interval = 10,
-  color = "chocolate2",
+  color = "goldenrod",
   output_file = "trisha-stimuli-pngs/garden_produce_lollipop.png"
 )
 
@@ -461,7 +461,7 @@ create_bar_chart(
   title = "Average Produce Handled per Volunteer by Garden Site",
   y_label = "Average Produce\n(kg) Per Volunteer",
   y_break_interval = 10,
-  color = "chocolate2",
+  color = "goldenrod",
   output_file = "trisha-stimuli-pngs/garden_produce_bar.png"
 )
 
@@ -472,7 +472,7 @@ create_dot_plot(
   title = "Average Produce Handled per Volunteer by Garden Site",
   y_label = "Average Produce\n(kg) Per Volunteer",
   y_break_interval = 10,
-  color = "chocolate2",
+  color = "goldenrod",
   output_file = "trisha-stimuli-pngs/garden_produce_dot.png"
 )
 
@@ -484,7 +484,7 @@ create_lollipop_chart(
   title = "Volunteer Counts by Garden Site",
   y_label = "Number of\nVolunteers",
   y_break_interval = 50,
-  color = "chocolate2",
+  color = "goldenrod",
   output_file = "trisha-stimuli-pngs/garden_volunteers_lollipop.png"
 )
 
@@ -495,7 +495,7 @@ create_bar_chart(
   title = "Volunteer Counts by Garden Site",
   y_label = "Number of\nVolunteers",
   y_break_interval = 50,
-  color = "chocolate2",
+  color = "goldenrod",
   output_file = "trisha-stimuli-pngs/garden_volunteers_bar.png"
 )
 
@@ -506,7 +506,7 @@ create_dot_plot(
   title = "Volunteer Counts by Garden Site",
   y_label = "Number of\nVolunteers",
   y_break_interval = 50,
-  color = "chocolate2",
+  color = "goldenrod",
   output_file = "trisha-stimuli-pngs/garden_volunteers_dot.png"
 )
 
@@ -518,7 +518,7 @@ create_lollipop_chart(
   title = "Unused Physical Space by Garden Site",
   y_label = "Unused Space\n(square feet)",
   y_break_interval = 10,
-  color = "chocolate2",
+  color = "goldenrod",
   output_file = "trisha-stimuli-pngs/garden_space_lollipop.png"
 )
 
@@ -529,7 +529,7 @@ create_bar_chart(
   title = "Unused Physical Space by Garden Site",
   y_label = "Unused Space\n(square feet)",
   y_break_interval = 10,
-  color = "chocolate2",
+  color = "goldenrod",
   output_file = "trisha-stimuli-pngs/garden_space_bar.png"
 )
 
@@ -540,7 +540,7 @@ create_dot_plot(
   title = "Unused Physical Space by Garden Site",
   y_label = "Unused Space\n(square feet)",
   y_break_interval = 10,
-  color = "chocolate2",
+  color = "goldenrod",
   output_file = "trisha-stimuli-pngs/garden_space_dot.png"
 )
 ```
@@ -624,9 +624,9 @@ create_dot_plot(
 create_lollipop_chart(
   data = library_data,
   category_col = age_range,
-  value_col = ebooks_checked_out,
-  title = "Number of E-books Checked Out by Age Group",
-  y_label = "E-books\nChecked Out",
+  value_col = digital_usage_rate,
+  title = "Proportion of Readers Using E-books by Age Group",
+  y_label = "Proportion",
   y_break_interval = 50,
   color = "dodgerblue4",
   output_file = "stimuli-pngs/library_ebooks_lollipop.png"
@@ -635,9 +635,9 @@ create_lollipop_chart(
 create_bar_chart(
   data = library_data,
   category_col = age_range,
-  value_col = ebooks_checked_out,
-  title = "Number of E-books Checked Out by Age Group",
-  y_label = "E-books\nChecked Out",
+  value_col = digital_usage_rate,
+  title = "Proportion of Readers Using E-books by Age Group",
+  y_label = "Proportion",
   y_break_interval = 50,
   color = "dodgerblue4",
   output_file = "stimuli-pngs/library_ebooks_bar.png"
@@ -646,9 +646,9 @@ create_bar_chart(
 create_dot_plot(
   data = library_data,
   category_col = age_range,
-  value_col = ebooks_checked_out,
-  title = "Number of E-books Checked Out by Age Group",
-  y_label = "E-books\nChecked Out",
+  value_col = digital_usage_rate,
+  title = "Proportion of Readers Using E-books by Age Group",
+  y_label = "Proportion",
   y_break_interval = 50,
   color = "dodgerblue4",
   output_file = "stimuli-pngs/library_ebooks_dot.png"
@@ -669,7 +669,7 @@ create_lollipop_chart(
   title = "Average Dollars Spent by Each Visitor Type",
   y_label = "Average Dollar\nAmount Spent",
   y_break_interval = 50,
-  color = "goldenrod2",
+  color = "plum2",
   output_file = "stimuli-pngs/fair_spending_lollipop.png"
 )
 
@@ -680,7 +680,7 @@ create_bar_chart(
   title = "Average Dollars Spent by Each Visitor Type",
   y_label = "Average Dollar\nAmount Spent",
   y_break_interval = 50,
-  color = "goldenrod2",
+  color = "plum2",
   output_file = "stimuli-pngs/fair_spending_bar.png"
 )
 
@@ -691,7 +691,7 @@ create_dot_plot(
   title = "Average Dollars Spent by Each Visitor Type",
   y_label = "Average Dollar\nAmount Spent",
   y_break_interval = 50,
-  color = "goldenrod2",
+  color = "plum2",
   output_file = "stimuli-pngs/fair_spending_dot.png"
 )
 
@@ -703,7 +703,7 @@ create_lollipop_chart(
   title = "% Visitors Who Attended All Days of the Fair",
   y_label = "% Attending\nAll Fair Days",
   y_break_interval = 20,
-  color = "goldenrod2",
+  color = "plum2",
   output_file = "trisha-stimuli-pngs/fair_attendance_lollipop.png"
 )
 
@@ -714,7 +714,7 @@ create_bar_chart(
   title = "% Visitors Who Attended All Days of the Fair",
   y_label = "% Attending\nAll Fair Days",
   y_break_interval = 20,
-  color = "goldenrod2",
+  color = "plum2",
   output_file = "trisha-stimuli-pngs/fair_attendance_bar.png"
 )
 
@@ -725,7 +725,7 @@ create_dot_plot(
   title = "% Visitors Who Attended All Days of the Fair",
   y_label = "% Attending\nAll Fair Days",
   y_break_interval = 20,
-  color = "goldenrod2",
+  color = "plum2",
   output_file = "trisha-stimuli-pngs/fair_attendance_dot.png"
 )
 
@@ -737,7 +737,7 @@ create_lollipop_chart(
   title = "Ticket Price by Visitor Type",
   y_label = "Ticket Price",
   y_break_interval = 20,
-  color = "goldenrod2",
+  color = "plum2",
   output_file = "trisha-stimuli-pngs/fair_ticket_lollipop.png"
 )
 
@@ -748,7 +748,7 @@ create_bar_chart(
   title = "Ticket Price by Visitor Type",
   y_label = "Ticket Price",
   y_break_interval = 20,
-  color = "goldenrod2",
+  color = "plum2",
   output_file = "trisha-stimuli-pngs/fair_ticket_bar.png"
 )
 
@@ -759,7 +759,7 @@ create_dot_plot(
   title = "Ticket Price by Visitor Type",
   y_label = "Ticket Price",
   y_break_interval = 20,
-  color = "goldenrod2",
+  color = "plum2",
   output_file = "trisha-stimuli-pngs/fair_ticket_dot.png"
 )
 ```
