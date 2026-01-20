@@ -11,9 +11,9 @@ library(grid)
 #| label: load-data
 social_media_data <- read_csv("datasets/social_media_data.csv")
 streaming_data <- read_csv("datasets/streaming_data.csv")
-workout_data <- read_csv("datasets/workout_preferences_data.csv")
+travel_data <- read_csv("datasets/travel_data.csv")
 transportation_data <- read_csv("datasets/transportation_data.csv")
-pet_data <- read_csv("datasets/pet_ownership_data.csv")
+gaming_data <- read_csv("datasets/gaming_data.csv")
 meals_data <- read_csv("datasets/meals_data.csv")
 ```
 
@@ -292,10 +292,10 @@ create_lollipop_chart(
   data = social_media_data,
   category_col = platform_type,
   value_col = time_per_day_minutes,
-  title = "Daily Time Spent by Platform Type",
+  title = "Average Daily Screen Time by Social Media Platform Type",
   y_label = "Time\n(minutes)",
   y_break_interval = 20,
-  color = "#6B8E96",
+  color = "#355463",
   output_file = "kelly-stimuli-pngs/social_lollipop.png"
 )
 
@@ -303,10 +303,10 @@ create_bar_chart(
   data = social_media_data,
   category_col = platform_type,
   value_col = time_per_day_minutes,
-  title = "Daily Time Spent by Platform Type",
+  title = "Average Daily Screen Time by Social Media Platform Type",
   y_label = "Time\n(minutes)",
   y_break_interval = 20,
-  color = "#6B8E96",
+  color = "#355463",
   output_file = "kelly-stimuli-pngs/social_bar1.png"
 )
 
@@ -315,22 +315,22 @@ create_bar_chart(
   data = social_media_data,
   category_col = platform_type,
   value_col = posts_per_week,
-  title = "Weekly Posts by Platform Type",
+  title = "Average Weekly Posts by Social Media Platform Type",
   y_label = "Posts per\nWeek",
   y_break_interval = 20,
-  color = "#6B8E96",
+  color = "#355463",
   output_file = "kelly-stimuli-pngs/social_bar.png"
 )
 
-# Chart 3: Dot - Connections
+# Chart 3: Dot - Followers
 create_dot_plot(
   data = social_media_data,
   category_col = platform_type,
   value_col = connections,
-  title = "Connections by Platform Type",
-  y_label = "Number of\nConnections",
+  title = "Average Followers by Social Media Platform Type",
+  y_label = "Number of\nFollowers",
   y_break_interval = 100,
-  color = "#6B8E96",
+  color = "#355463",
   output_file = "kelly-stimuli-pngs/social_dot.png"
 )
 
@@ -338,10 +338,10 @@ create_bar_chart(
   data = social_media_data,
   category_col = platform_type,
   value_col = connections,
-  title = "Connections by Platform Type",
-  y_label = "Number of\nConnections",
+  title = "Average Number of Followers by Social Media Platform Type",
+  y_label = "Number of\nFollowers",
   y_break_interval = 100,
-  color = "#6B8E96",
+  color = "#355463",
   output_file = "kelly-stimuli-pngs/social_bar3.png"
 )
 ```
@@ -353,7 +353,7 @@ create_bar_chart(
   data = streaming_data,
   category_col = content_type,
   value_col = episodes_per_session,
-  title = "Episodes Watched per Binge Session by Content Type",
+  title = "TV Episodes Watched per Binge Session by Content Type",
   y_label = "Number of\nEpisodes",
   y_break_interval = 2,
   color = "#7D6B7D",
@@ -365,7 +365,7 @@ create_dot_plot(
   data = streaming_data,
   category_col = content_type,
   value_col = total_hours_weekly,
-  title = "Total Weekly Viewing Hours by Content Type",
+  title = "Total TV Weekly Viewing Hours by Content Type",
   y_label = "Hours per\nWeek",
   y_break_interval = 2,
   color = "#7D6B7D",
@@ -376,7 +376,7 @@ create_bar_chart(
   data = streaming_data,
   category_col = content_type,
   value_col = total_hours_weekly,
-  title = "Total Weekly Viewing Hours by Content Type",
+  title = "Total TV Weekly Viewing Hours by Content Type",
   y_label = "Hours per\nWeek",
   y_break_interval = 2,
   color = "#7D6B7D",
@@ -388,7 +388,7 @@ create_lollipop_chart(
   data = streaming_data,
   category_col = content_type,
   value_col = days_to_finish_series,
-  title = "Average Days to Complete a Series by Content Type",
+  title = "Average Days to Complete a TV Series by Content Type",
   y_label = "Number of\nDays",
   y_break_interval = 2,
   color = "#7D6B7D",
@@ -399,7 +399,7 @@ create_bar_chart(
   data = streaming_data,
   category_col = content_type,
   value_col = days_to_finish_series,
-  title = "Average Days to Complete a Series by Content Type",
+  title = "Average Days to Complete a TV Series by Content Type",
   y_label = "Number of\nDays",
   y_break_interval = 2,
   color = "#7D6B7D",
@@ -409,72 +409,64 @@ create_bar_chart(
 
 
 ``` {r}
-#| label: workout-stimuli
+#| label: travel-stimuli
 
-# Define category order
-category_order <- c("Cardio", "Strength Training", "Yoga", "Sports/Classes")
+# Chart 1: Bar - Planning hours
+create_bar_chart(
+  data = travel_data,
+  category_col = travel_type,
+  value_col = planning_hours,
+  title = "Average Time Spent Planning by Vacation Type",
+  y_label = "Number of\nhours",
+  y_break_interval = 10,
+  color = "#536345",
+  output_file = "kelly-stimuli-pngs/travel_bar.png"
+)
 
-# Create lollipop chart for time per week
+# Chart 2: Lollipop - Trip cost
 create_lollipop_chart(
-  data = workout_data,
-  category_col = workout_type,
-  value_col = time_per_week_minutes,
-  title = "Average Time Spent Working Out by Workout Type",
-  y_label = "Time per Week\n(minutes)",
-  category_order = category_order,
-  y_break_interval = 50,
-  color = "steelblue",
-  output_file = "kelly-stimuli-pngs/workout_lollipop.png"
+  data = travel_data,
+  category_col = travel_type,
+  value_col = trip_cost,
+  title = "Average Trip Cost by Vacation Type",
+  y_label = "Cost\n(Dollars)",
+  y_break_interval = 500,
+  color = "#536345",
+  output_file = "kelly-stimuli-pngs/travel_lollipop.png"
 )
 
 create_bar_chart(
-  data = workout_data,
-  category_col = workout_type,
-  value_col = time_per_week_minutes,
-  title = "Average Time Spent Working Out by Workout Type",
-  y_label = "Time per Week\n(minutes)",
-  category_order = category_order,
-  y_break_interval = 50,
-  color = "steelblue",
-  output_file = "kelly-stimuli-pngs/workout_bar1.png"
+  data = travel_data,
+  category_col = travel_type,
+  value_col = trip_cost,
+  title = "Average Trip Cost by Vacation Type",
+  y_label = "Cost\n(Dollars)",
+  y_break_interval = 500,
+  color = "#536345",
+  output_file = "kelly-stimuli-pngs/travel_bar2.png"
 )
 
-# Create bar chart for calories per session
-create_bar_chart(
-  data = workout_data,
-  category_col = workout_type,
-  value_col = calories_per_session,
-  title = "Average Calories Burned per Session by Workout Type",
-  y_label = "Number of\nCalories",
-  category_order = category_order,
-  y_break_interval = 100,
-  color = "steelblue",
-  output_file = "kelly-stimuli-pngs/workout_bar.png"
-)
-
-# Create dot plot for sessions per week
+# Chart 3: Dot - Trip length
 create_dot_plot(
-  data = workout_data,
-  category_col = workout_type,
-  value_col = sessions_per_week,
-  title = "Average Sessions per Week by Workout Type",
-  y_label = "Number of\nSessions",
-  category_order = category_order,
-  y_break_interval = 1,
-  color = "steelblue",
-  output_file = "kelly-stimuli-pngs/workout_dot.png"
+  data = travel_data,
+  category_col = travel_type,
+  value_col = days_away,
+  title = "Average Length of the Trip by Vacation Type",
+  y_label = "Number of\ndays",
+  y_break_interval = 2,
+  color = "#536345",
+  output_file = "kelly-stimuli-pngs/travel_dot.png"
 )
 
 create_bar_chart(
-  data = workout_data,
-  category_col = workout_type,
-  value_col = sessions_per_week,
-  title = "Average Sessions per Week by Workout Type",
-  y_label = "Number of\nSessions",
-  category_order = category_order,
-  y_break_interval = 1,
-  color = "steelblue",
-  output_file = "kelly-stimuli-pngs/workout_bar3.png"
+  data = travel_data,
+  category_col = travel_type,
+  value_col = days_away,
+  title = "Average Length of the Trip by Vacation Type",
+  y_label = "Number of\ndays",
+  y_break_interval = 2,
+  color = "#536345",
+  output_file = "kelly-stimuli-pngs/travel_bar3.png"
 )
 ```
 
@@ -488,7 +480,7 @@ create_lollipop_chart(
   title = "Commute Time by Transportation Method",
   y_label = "Time\n(minutes)",
   y_break_interval = 10,
-  color = "#6B8E7D",
+  color = "#8d5b69",
   output_file = "kelly-stimuli-pngs/transport_lollipop.png"
 )
 
@@ -499,7 +491,7 @@ create_bar_chart(
   title = "Commute Time by Transportation Method",
   y_label = "Time\n(minutes)",
   y_break_interval = 10,
-  color = "#6B8E7D",
+  color = "#8d5b69",
   output_file = "kelly-stimuli-pngs/transport_bar1.png"
 )
 
@@ -511,7 +503,7 @@ create_bar_chart(
   title = "Weekly Cost by Transportation Method",
   y_label = "Cost\n(Dollars)",
   y_break_interval = 10,
-  color = "#6B8E7D",
+  color = "#8d5b69",
   output_file = "kelly-stimuli-pngs/transport_bar.png"
 )
 
@@ -523,7 +515,7 @@ create_dot_plot(
   title = "Distance Traveled by Transportation Method",
   y_label = "Distance\n(miles)",
   y_break_interval = 2,
-  color = "#6B8E7D",
+  color = "#8d5b69",
   output_file = "kelly-stimuli-pngs/transport_dot.png"
 )
 
@@ -534,71 +526,78 @@ create_bar_chart(
   title = "Distance Traveled by Transportation Method",
   y_label = "Distance\n(miles)",
   y_break_interval = 2,
-  color = "#6B8E7D",
+  color = "#8d5b69",
   output_file = "kelly-stimuli-pngs/transport_bar3.png"
 )
 ```
 
 
 ```{r}
-#| label: pet-stimuli
+#| label: gaming-stimuli
 
-# Chart 1: Bar - Monthly cost
-create_bar_chart(
-  data = pet_data,
-  category_col = pet_type,
-  value_col = monthly_cost,
-  title = "Monthly Cost by Pet Type",
-  y_label = "Cost\n(Dollars)",
-  y_break_interval = 50,
-  color = "#9B7E6B",
-  output_file = "kelly-stimuli-pngs/pet_bar.png"
-)
+gaming_order <- c("Mobile", "Console", "PC", "VR", "Handheld")
 
-# Chart 2: Lollipop - Daily care minutes
+# Chart 1: Lollipop - Weekly players
 create_lollipop_chart(
-  data = pet_data,
-  category_col = pet_type,
-  value_col = daily_care_minutes,
-  title = "Daily Care Time by Pet Type",
-  y_label = "Time\n(minutes)",
-  y_break_interval = 20,
-  color = "#9B7E6B",
-  output_file = "kelly-stimuli-pngs/pet_lollipop.png"
+  data = gaming_data,
+  category_col = gaming_platform,
+  value_col = weekly_players_millions,
+  title = "Average Number of Weekly Players by Video Game Type",
+  y_label = "Number of \nPlayers (millions)",
+  category_order = gaming_order,
+  y_break_interval = 100,
+  color = "#8E7D9B",
+  output_file = "kelly-stimuli-pngs/gaming_lollipop.png"
 )
 
 create_bar_chart(
-  data = pet_data,
-  category_col = pet_type,
-  value_col = daily_care_minutes,
-  title = "Daily Care Time by Pet Type",
-  y_label = "Time\n(minutes)",
-  y_break_interval = 20,
-  color = "#9B7E6B",
-  output_file = "kelly-stimuli-pngs/pet_bar2.png"
+  data = gaming_data,
+  category_col = gaming_platform,
+  value_col = weekly_players_millions,
+  title = "Average Number of Weekly Players by Video Game Type",
+  y_label = "Number of \nPlayers (millions)",
+  category_order = gaming_order,
+  y_break_interval = 100,
+  color = "#8E7D9B",
+  output_file = "kelly-stimuli-pngs/gaming_bar1.png"
 )
 
-# Chart 3: Dot - Vet visits per year
+# Chart 2: Dot - Avg session minutes
 create_dot_plot(
-  data = pet_data,
-  category_col = pet_type,
-  value_col = vet_visits_per_year,
-  title = "Annual Vet Visits by Pet Type",
-  y_label = "Number of\nVisits",
-  y_break_interval = 1,
-  color = "#9B7E6B",
-  output_file = "kelly-stimuli-pngs/pet_dot.png"
+  data = gaming_data,
+  category_col = gaming_platform,
+  value_col = avg_session_minutes,
+  title = "Average Playing Time per Session by Video Game Type",
+  y_label = "Playing time\n(minutes)",
+  category_order = gaming_order,
+  y_break_interval = 20,
+  color = "#8E7D9B",
+  output_file = "kelly-stimuli-pngs/gaming_dot.png"
 )
 
 create_bar_chart(
-  data = pet_data,
-  category_col = pet_type,
-  value_col = vet_visits_per_year,
-  title = "Annual Vet Visits by Pet Type",
-  y_label = "Number of\nVisits",
-  y_break_interval = 1,
-  color = "#9B7E6B",
-  output_file = "kelly-stimuli-pngs/pet_bar3.png"
+  data = gaming_data,
+  category_col = gaming_platform,
+  value_col = avg_session_minutes,
+  title = "Average Playing Time per Session by Video Game Type",
+  y_label = "Session Length\n(minutes)",
+  category_order = gaming_order,
+  y_break_interval = 20,
+  color = "#8E7D9B",
+  output_file = "kelly-stimuli-pngs/gaming_bar2.png"
+)
+
+# Chart 3: Bar - Monthly spending
+create_bar_chart(
+  data = gaming_data,
+  category_col = gaming_platform,
+  value_col = monthly_spending,
+  title = "Average Monthly Game Spending by Video Game Type",
+  y_label = "Spending\n(dollars)",
+  category_order = gaming_order,
+  y_break_interval = 20,
+  color = "#8E7D9B",
+  output_file = "kelly-stimuli-pngs/gaming_bar.png"
 )
 ```
 
@@ -612,11 +611,11 @@ create_dot_plot(
   data = meals_data,
   category_col = meal_type,
   value_col = prep_time_minutes,
-  title = "Preparation Time by Meal Type",
+  title = "Average Preparation Time by Meal Type",
   y_label = "Prep Time\n(minutes)",
   category_order = meals_order,
   y_break_interval = 10,
-  color = "#A67C8B",
+  color = "#394c61",
   output_file = "kelly-stimuli-pngs/meals_dot.png"
 )
 
@@ -624,11 +623,11 @@ create_bar_chart(
   data = meals_data,
   category_col = meal_type,
   value_col = prep_time_minutes,
-  title = "Preparation Time by Meal Type",
+  title = "Average Preparation Time by Meal Type",
   y_label = "Prep Time\n(minutes)",
   category_order = meals_order,
   y_break_interval = 10,
-  color = "#A67C8B",
+  color = "#394c61",
   output_file = "kelly-stimuli-pngs/meals_bar1.png"
 )
 
@@ -637,11 +636,11 @@ create_bar_chart(
   data = meals_data,
   category_col = meal_type,
   value_col = cost_per_serving,
-  title = "Cost per Serving by Meal Type",
+  title = "Average Cost per Serving by Meal Type",
   y_label = "Cost per\nServing ($)",
   category_order = meals_order,
   y_break_interval = 2,
-  color = "#A67C8B",
+  color = "#394c61",
   output_file = "kelly-stimuli-pngs/meals_bar.png"
 )
 
@@ -650,11 +649,11 @@ create_lollipop_chart(
   data = meals_data,
   category_col = meal_type,
   value_col = servings_per_week,
-  title = "Servings per Week by Meal Type",
+  title = "Average Servings per Week by Meal Type",
   y_label = "Servings\nper Week",
   category_order = meals_order,
   y_break_interval = 2,
-  color = "#A67C8B",
+  color = "#394c61",
   output_file = "kelly-stimuli-pngs/meals_lollipop.png"
 )
 
@@ -662,11 +661,11 @@ create_bar_chart(
   data = meals_data,
   category_col = meal_type,
   value_col = servings_per_week,
-  title = "Servings per Week by Meal Type",
+  title = "Average Servings per Week by Meal Type",
   y_label = "Servings\nper Week",
   category_order = meals_order,
   y_break_interval = 2,
-  color = "#A67C8B",
+  color = "#394c61",
   output_file = "kelly-stimuli-pngs/meals_bar3.png"
 )
 ```
