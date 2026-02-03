@@ -103,6 +103,7 @@ create_lollipop_chart <- function(data,
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank()
     ) +
+    #PROBLEMATIC AREA OF Y-AXIS CENTERING
     annotation_custom(
       grob = textGrob(
         label = y_label, 
