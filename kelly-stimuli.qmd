@@ -70,6 +70,7 @@ create_lollipop_chart <- function(data,
         face = "bold", 
         vjust = 1,
         hjust = 0.5, 
+        lineheight = 1.2,
         margin = margin(t = -20, b = 60)  # Increased bottom margin for more space
       ),
       plot.margin = margin(45, 40, 25, 40),
@@ -159,6 +160,7 @@ create_bar_chart <- function(data,
         face = "bold", 
         vjust = 1,
         hjust = 0.5, 
+        lineheight = 1.2,
         margin = margin(t = -20, b = 60)  # Increased bottom margin for more space
       ),
       plot.margin = margin(45, 40, 25, 40),
@@ -247,6 +249,7 @@ create_dot_plot <- function(data,
         face = "bold", 
         vjust = 1,
         hjust = 0.5, 
+        lineheight = 1.2,
         margin = margin(t = -20, b = 60)  # Increased bottom margin for more space
       ),
       plot.margin = margin(45, 40, 25, 40),
@@ -293,7 +296,7 @@ create_lollipop_chart(
   data = social_media_data,
   category_col = platform_type,
   value_col = time_per_day_minutes,
-  title = "Average Daily Screen Time by Social Media Platform Type",
+  title = "Average Daily Engagement Time\nby Social Media Platform Type",
   y_label = "Time\n(minutes)",
   y_break_interval = 20,
   color = "#355463",
@@ -304,7 +307,7 @@ create_bar_chart(
   data = social_media_data,
   category_col = platform_type,
   value_col = time_per_day_minutes,
-  title = "Average Daily Screen Time by Social Media Platform Type",
+  title = "Average Daily Engagement Time\nby Social Media Platform Type",
   y_label = "Time\n(minutes)",
   y_break_interval = 20,
   color = "#355463",
@@ -316,7 +319,7 @@ create_bar_chart(
   data = social_media_data,
   category_col = platform_type,
   value_col = posts_per_week,
-  title = "Average Weekly Posts by Social Media Platform Type",
+  title = "Average Weekly Posts per User\nby Social Media Platform Type",
   y_label = "Posts per\nWeek",
   y_break_interval = 20,
   color = "#355463",
@@ -328,8 +331,8 @@ create_dot_plot(
   data = social_media_data,
   category_col = platform_type,
   value_col = connections,
-  title = "Average Followers by Social Media Platform Type",
-  y_label = "Number of\nFollowers",
+  title = "Average Number of Followers per User\nby Social Media Platform Type",
+  y_label = "Average Number\nof Followers",
   y_break_interval = 100,
   color = "#355463",
   output_file = "kelly-stimuli-pngs/social_dot.png"
@@ -339,7 +342,7 @@ create_bar_chart(
   data = social_media_data,
   category_col = platform_type,
   value_col = connections,
-  title = "Average Number of Followers by Social Media Platform Type",
+  title = "Average Number of Followers per User\nby Social Media Platform Type",
   y_label = "Number of\nFollowers",
   y_break_interval = 100,
   color = "#355463",
@@ -354,7 +357,7 @@ create_bar_chart(
   data = streaming_data,
   category_col = content_type,
   value_col = episodes_per_session,
-  title = "TV Episodes Watched per Binge Session by Content Type",
+  title = "Average Episodes Watched per Binge Session by Content Type",
   y_label = "Number of\nEpisodes",
   y_break_interval = 2,
   color = "#7D6B7D",
@@ -366,7 +369,7 @@ create_dot_plot(
   data = streaming_data,
   category_col = content_type,
   value_col = total_hours_weekly,
-  title = "Total TV Weekly Viewing Hours by Content Type",
+  title = "Average Weekly Viewing Hours by Content Type",
   y_label = "Hours per\nWeek",
   y_break_interval = 2,
   color = "#7D6B7D",
@@ -377,7 +380,7 @@ create_bar_chart(
   data = streaming_data,
   category_col = content_type,
   value_col = total_hours_weekly,
-  title = "Total TV Weekly Viewing Hours by Content Type",
+  title = "Average Weekly Viewing Hours by Content Type",
   y_label = "Hours per\nWeek",
   y_break_interval = 2,
   color = "#7D6B7D",
@@ -389,7 +392,7 @@ create_lollipop_chart(
   data = streaming_data,
   category_col = content_type,
   value_col = days_to_finish_series,
-  title = "Average Days to Complete a TV Series by Content Type",
+  title = "Average Days to Complete a Series by Content Type",
   y_label = "Number of\nDays",
   y_break_interval = 2,
   color = "#7D6B7D",
@@ -400,7 +403,7 @@ create_bar_chart(
   data = streaming_data,
   category_col = content_type,
   value_col = days_to_finish_series,
-  title = "Average Days to Complete a TV Series by Content Type",
+  title = "Average Days to Complete a Series by Content Type",
   y_label = "Number of\nDays",
   y_break_interval = 2,
   color = "#7D6B7D",
@@ -408,8 +411,7 @@ create_bar_chart(
 )
 ```
 
-
-``` {r}
+```{r}
 #| label: travel-stimuli
 
 # Chart 1: Bar - Planning hours
@@ -531,7 +533,6 @@ create_bar_chart(
   output_file = "kelly-stimuli-pngs/transport_bar3.png"
 )
 ```
-
 
 ```{r}
 #| label: gaming-stimuli
