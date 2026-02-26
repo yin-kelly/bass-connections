@@ -26,16 +26,31 @@ garden_data <- garden_data |>
                           site == "Westside" ~ "West Side",
                           site == "Centralish" ~ "Central City",
                           site == "Southside" ~ "South Side",
-                          site == "Eastside" ~ "East Side"))
+                          site == "Eastside" ~ "East Side")) |>
+  mutate(produce_handled_per_volunteer = if_else(site == "West Side", 
+                                                 2.5, 
+                                                 produce_handled_per_volunteer))
 
 college_career_data <- college_career_data |>
   mutate(class_year = case_when(class_year == "Freshmen" ~ "Freshman",
                                 class_year == "Sophomores" ~ "Sophomore",
                                 class_year == "Juniors" ~ "Junior",
-                                class_year == "Seniors" ~ "Senior"))
+                                class_year == "Seniors" ~ "Senior")) |>
+  mutate(satisfaction_career_center = if_else(class_year == "Freshman",
+                                              4, satisfaction_career_center))
+
+fair_data <- fair_data |>
+  mutate(pct_attending_all_days = case_match(visitor_type, 
+                                             "Student" ~ 60, 
+                                             "VIP" ~ 80,
+                                             .default = pct_attending_all_days))
 
 credit_data <- credit_data |>
   clean_names()
+
+school_supplies_data <- school_supplies_data |>
+  mutate(notebook_type = ifelse(notebook_type == "Blank", 
+                                "Layflat", notebook_type))
 ```
 
 
@@ -50,12 +65,15 @@ create_lollipop_chart <- function(data,
                                    title,
                                    y_label,
                                    category_order = NULL,
+                                  ymin = NULL,
+                                  ymax = NULL,
                                    y_break_interval = 50,
-                                   color = "chocolate2",
+                                   color = "chocolate3",
                                    output_file = NULL,
                                    x_text = 14,
                                    y_text = 14,
-                                   title_size = 16) {
+                                   title_size = 16,
+                                  y_axis_labels = NULL) {
   
   # Prepare the data
   plot_data <- data |>
@@ -68,8 +86,16 @@ create_lollipop_chart <- function(data,
   }
   
   # Calculate y-axis upper limit
-  ymax <- max(plot_data$value, na.rm = TRUE)
-  yupper <- ceiling(ymax / y_break_interval) * y_break_interval
+  if (is.null(ymax)) {
+    ymax <- max(plot_data$value, na.rm = TRUE)
+    if (!is.null(y_break_interval)) {
+      yupper <- ceiling(ymax / y_break_interval) * y_break_interval
+    } else {
+      yupper <- ymax
+    }
+  } else {
+    yupper <- ymax  # Use the provided max
+  }
   
   # Create the plot
   p <- ggplot(plot_data, aes(x = category, y = value)) +
@@ -83,7 +109,8 @@ create_lollipop_chart <- function(data,
     ) +
     scale_y_continuous(
       limits = c(0, yupper),
-      breaks = seq(0, yupper, by = y_break_interval),
+      #breaks = seq(0, yupper, by = y_break_interval),
+      labels = if (!is.null(y_axis_labels)) y_axis_labels else waiver(),
       expand = expansion(mult = c(0, 0.05))
     ) +
     theme_classic() +
@@ -143,12 +170,15 @@ create_bar_chart <- function(data,
                               title,
                               y_label,
                               category_order = NULL,
+                             ymin = NULL,
+                             ymax = NULL,
                               y_break_interval = 50,
-                              color = "chocolate2",
+                              color = "chocolate3",
                               output_file = NULL,
                               x_text = 14,
                               y_text = 14,
-                              title_size = 16) {
+                              title_size = 16,
+                             y_axis_labels = NULL) {
   
   # Prepare the data
   plot_data <- data |>
@@ -161,8 +191,16 @@ create_bar_chart <- function(data,
   }
   
   # Calculate y-axis upper limit
-  ymax <- max(plot_data$value, na.rm = TRUE)
-  yupper <- ceiling(ymax / y_break_interval) * y_break_interval
+  if (is.null(ymax)) {
+    ymax <- max(plot_data$value, na.rm = TRUE)
+    if (!is.null(y_break_interval)) {
+      yupper <- ceiling(ymax / y_break_interval) * y_break_interval
+    } else {
+      yupper <- ymax
+    }
+  } else {
+    yupper <- ymax  # Use the provided max
+  }
   
   # Create the plot
   p <- ggplot(plot_data, aes(x = category, y = value)) +
@@ -175,6 +213,7 @@ create_bar_chart <- function(data,
     scale_y_continuous(
       limits = c(0, yupper),
       breaks = seq(0, yupper, by = y_break_interval),
+      labels = if (!is.null(y_axis_labels)) y_axis_labels else waiver(),
       expand = expansion(mult = c(0, 0.05))
     ) +
     theme_classic() +
@@ -233,12 +272,15 @@ create_dot_plot <- function(data,
                              title,
                              y_label,
                              category_order = NULL,
+                            ymin = NULL,
+                            ymax = NULL,
                              y_break_interval = 0.5,
-                             color = "chocolate2",
+                             color = "chocolate3",
                              output_file = NULL,
                              x_text = 14,
                              y_text = 14,
-                             title_size = 16) {
+                             title_size = 16,
+                            y_axis_labels = NULL) {
   
   # Prepare the data
   plot_data <- data |>
@@ -251,8 +293,16 @@ create_dot_plot <- function(data,
   }
   
   # Calculate y-axis upper limit
-  ymax <- max(plot_data$value, na.rm = TRUE)
-  yupper <- ceiling(ymax / y_break_interval) * y_break_interval
+  if (is.null(ymax)) {
+    ymax <- max(plot_data$value, na.rm = TRUE)
+    if (!is.null(y_break_interval)) {
+      yupper <- ceiling(ymax / y_break_interval) * y_break_interval
+    } else {
+      yupper <- ymax
+    }
+  } else {
+    yupper <- ymax  # Use the provided max
+  }
   
   # Create the plot
   p <- ggplot(plot_data, aes(x = category, y = value)) +
@@ -265,6 +315,7 @@ create_dot_plot <- function(data,
     scale_y_continuous(
       limits = c(0, yupper),
       breaks = seq(0, yupper, by = y_break_interval),
+      labels = if (!is.null(y_axis_labels)) y_axis_labels else waiver(),
       expand = expansion(mult = c(0, 0.05))
     ) +
     theme_classic() +
@@ -326,36 +377,36 @@ create_lollipop_chart(
   data = college_career_data,
   category_col = class_year,
   value_col = weekly_study_hours,
-  title = "Average Weekly Study Hours by Class Year",
-  y_label = "Study Hours\nper Week",
+  title = "Average Weekly Study\nHours by Class Year",
+  y_label = "Study\nHrs./Week",
   category_order = class_order,
-  y_break_interval = 10,
-  color = "orange3",
-  output_file = "trisha-stimuli-pngs/college_hours_lollipop.png"
+  y_break_interval = 5,
+  color = "seagreen",
+  output_file = "trisha-stimuli-pngs/college_lollipop_hours.png"
 )
 
 create_bar_chart(
   data = college_career_data,
   category_col = class_year,
   value_col = weekly_study_hours,
-  title = "Average Weekly Study Hours by Class Year",
-  y_label = "Study Hours\nper Week",
+  title = "Average Weekly Study\nHours by Class Year",
+  y_label = "Study\nHrs./Week",
   category_order = class_order,
-  y_break_interval = 10,
-  color = "orange3",
-  output_file = "trisha-stimuli-pngs/college_hours_bar.png"
+  y_break_interval = 5,
+  color = "seagreen",
+  output_file = "trisha-stimuli-pngs/college_bar_hours.png"
 )
 
 create_dot_plot(
   data = college_career_data,
   category_col = class_year,
   value_col = weekly_study_hours,
-  title = "Average Weekly Study Hours by Class Year",
-  y_label = "Study Hours\nper Week",
+  title = "Average Weekly Study\nHours by Class Year",
+  y_label = "Study\nHrs./Week",
   category_order = class_order,
-  y_break_interval = 10,
-  color = "orange3",
-  output_file = "trisha-stimuli-pngs/college_hours_dot.png"
+  y_break_interval = 5,
+  color = "seagreen",
+  output_file = "trisha-stimuli-pngs/college_dot_hours.png"
 )
 
 # Grad School Plans - 3 charts
@@ -363,12 +414,12 @@ create_lollipop_chart(
   data = college_career_data,
   category_col = class_year,
   value_col = intention_attend_grad_school_pct,
-  title = "% of Students Planning to Attend Graduate School by Class Year",
+  title = "Percent of Students Planning\nto Attend Graduate School by Class Year",
   y_label = "% Planning to\nAttend Grad School",
   category_order = class_order,
   y_break_interval = 20,
-  color = "orange3",
-  output_file = "trisha-stimuli-pngs/college_grad_lollipop.png",
+  color = "seagreen",
+  output_file = "trisha-stimuli-pngs/college_lollipop_grad.png",
   title_size = 14
 )
 
@@ -376,12 +427,12 @@ create_bar_chart(
   data = college_career_data,
   category_col = class_year,
   value_col = intention_attend_grad_school_pct,
-  title = "% of Students Planning to Attend Graduate School by Class Year",
+  title = "Percent of Students Planning\nto Attend Graduate School by Class Year",
   y_label = "% Planning to\nAttend Grad School",
   category_order = class_order,
   y_break_interval = 20,
-  color = "orange3",
-  output_file = "trisha-stimuli-pngs/college_grad_bar.png",
+  color = "seagreen",
+  output_file = "trisha-stimuli-pngs/college_bar_grad.png",
   title_size = 14
 )
 
@@ -389,12 +440,12 @@ create_dot_plot(
   data = college_career_data,
   category_col = class_year,
   value_col = intention_attend_grad_school_pct,
-  title = "% of Students Planning to Attend Graduate School by Class Year",
+  title = "Percent of Students Planning\nto Attend Graduate School by Class Year",
   y_label = "% Planning to\nAttend Grad School",
   category_order = class_order,
   y_break_interval = 20,
-  color = "orange3",
-  output_file = "trisha-stimuli-pngs/college_grad_dot.png",
+  color = "seagreen",
+  output_file = "trisha-stimuli-pngs/college_dot_grad.png",
   title_size = 14
 )
 
@@ -403,12 +454,13 @@ create_lollipop_chart(
   data = college_career_data,
   category_col = class_year,
   value_col = satisfaction_career_center,
-  title = "Satisfaction with Career Services by Class Year",
-  y_label = "Average\nSatisfaction (1-5)",
+  title = "Average Satisfaction with\nCareer Services by Class Year",
+  y_label = "Avg.\nSatisfaction\n(1-5)",
   category_order = class_order,
+  ymax = 5,
   y_break_interval = 1,
-  color = "orange3",
-  output_file = "trisha-stimuli-pngs/college_satisfaction_lollipop.png",
+  color = "seagreen",
+  output_file = "trisha-stimuli-pngs/college_lollipop_satisfaction.png",
   y_text = 10
 )
 
@@ -416,25 +468,27 @@ create_bar_chart(
   data = college_career_data,
   category_col = class_year,
   value_col = satisfaction_career_center,
-  title = "Satisfaction with Career Services by Class Year",
-  y_label = "Average\nSatisfaction (1-5)",
+  title = "Average Satisfaction with\nCareer Services by Class Year",
+  y_label = "Avg. Satisfaction\n(1-5)",
   category_order = class_order,
+  ymax = 5,
   y_break_interval = 1,
   y_text = 10,
-  color = "orange3",
-  output_file = "trisha-stimuli-pngs/college_satisfaction_bar.png"
+  color = "seagreen",
+  output_file = "trisha-stimuli-pngs/college_bar_satisfaction.png"
 )
 
 create_dot_plot(
   data = college_career_data,
   category_col = class_year,
   value_col = satisfaction_career_center,
-  title = "Satisfaction with Career Services by Class Year",
-  y_label = "Average\nSatisfaction (1-5)",
+  title = "Average Satisfaction with\nCareer Services by Class Year",
+  y_label = "Avg. Satisfaction\n(1-5)",
   category_order = class_order,
+  ymax = 5,
   y_break_interval = 1,
-  color = "orange3",
-  output_file = "trisha-stimuli-pngs/college_satisfaction_dot.png",
+  color = "seagreen",
+  output_file = "trisha-stimuli-pngs/college_dot_satisfaction.png",
   y_text = 10
 )
 ```
@@ -449,33 +503,33 @@ create_lollipop_chart(
   data = garden_data,
   category_col = site,
   value_col = produce_handled_per_volunteer,
-  title = "Average Produce Handled per Volunteer by Garden Site",
-  y_label = "Average Produce\n(kg) Per Volunteer",
-  y_break_interval = 10,
-  color = "goldenrod",
-  output_file = "trisha-stimuli-pngs/garden_produce_lollipop.png"
+  title = "Average Produce Handled\nper Volunteer by Garden Site",
+  y_label = "Avg. Produce\n(kg)/Volunteer",
+  y_break_interval = 1,
+  color = "chocolate3",
+  output_file = "trisha-stimuli-pngs/garden_lollipop_produce.png"
 )
 
 create_bar_chart(
   data = garden_data,
   category_col = site,
   value_col = produce_handled_per_volunteer,
-  title = "Average Produce Handled per Volunteer by Garden Site",
-  y_label = "Average Produce\n(kg) Per Volunteer",
-  y_break_interval = 10,
-  color = "goldenrod",
-  output_file = "trisha-stimuli-pngs/garden_produce_bar.png"
+  title = "Average Produce Handled\nper Volunteer by Garden Site",
+  y_label = "Avg. Produce\n(kg)/Volunteer",
+  y_break_interval = 1,
+  color = "chocolate3",
+  output_file = "trisha-stimuli-pngs/garden_bar_produce.png"
 )
 
 create_dot_plot(
   data = garden_data,
   category_col = site,
   value_col = produce_handled_per_volunteer,
-  title = "Average Produce Handled per Volunteer by Garden Site",
-  y_label = "Average Produce\n(kg) Per Volunteer",
-  y_break_interval = 10,
-  color = "goldenrod",
-  output_file = "trisha-stimuli-pngs/garden_produce_dot.png"
+  title = "Average Produce Handled\nper Volunteer by Garden Site",
+  y_label = "Avg. Produce\n(kg)/Volunteer",
+  y_break_interval = 1,
+  color = "chocolate3",
+  output_file = "trisha-stimuli-pngs/garden_dot_produce.png"
 )
 
 # Volunteer Count - 3 charts
@@ -485,9 +539,9 @@ create_lollipop_chart(
   value_col = current_volunteer_count,
   title = "Volunteer Counts by Garden Site",
   y_label = "Number of\nVolunteers",
-  y_break_interval = 50,
-  color = "goldenrod",
-  output_file = "trisha-stimuli-pngs/garden_volunteers_lollipop.png"
+  y_break_interval = 25,
+  color = "chocolate3",
+  output_file = "trisha-stimuli-pngs/garden_lollipop_volunteers.png"
 )
 
 create_bar_chart(
@@ -496,9 +550,9 @@ create_bar_chart(
   value_col = current_volunteer_count,
   title = "Volunteer Counts by Garden Site",
   y_label = "Number of\nVolunteers",
-  y_break_interval = 50,
-  color = "goldenrod",
-  output_file = "trisha-stimuli-pngs/garden_volunteers_bar.png"
+  y_break_interval = 25,
+  color = "chocolate3",
+  output_file = "trisha-stimuli-pngs/garden_bar_volunteers.png"
 )
 
 create_dot_plot(
@@ -507,9 +561,9 @@ create_dot_plot(
   value_col = current_volunteer_count,
   title = "Volunteer Counts by Garden Site",
   y_label = "Number of\nVolunteers",
-  y_break_interval = 50,
-  color = "goldenrod",
-  output_file = "trisha-stimuli-pngs/garden_volunteers_dot.png"
+  y_break_interval = 25,
+  color = "chocolate3",
+  output_file = "trisha-stimuli-pngs/garden_dot_volunteers.png"
 )
 
 # Unused Space - 3 charts
@@ -520,8 +574,8 @@ create_lollipop_chart(
   title = "Unused Physical Space by Garden Site",
   y_label = "Unused Space\n(square feet)",
   y_break_interval = 10,
-  color = "goldenrod",
-  output_file = "trisha-stimuli-pngs/garden_space_lollipop.png"
+  color = "chocolate3",
+  output_file = "trisha-stimuli-pngs/garden_lollipop_space.png"
 )
 
 create_bar_chart(
@@ -531,8 +585,8 @@ create_bar_chart(
   title = "Unused Physical Space by Garden Site",
   y_label = "Unused Space\n(square feet)",
   y_break_interval = 10,
-  color = "goldenrod",
-  output_file = "trisha-stimuli-pngs/garden_space_bar.png"
+  color = "chocolate3",
+  output_file = "trisha-stimuli-pngs/garden_bar_space.png"
 )
 
 create_dot_plot(
@@ -542,8 +596,8 @@ create_dot_plot(
   title = "Unused Physical Space by Garden Site",
   y_label = "Unused Space\n(square feet)",
   y_break_interval = 10,
-  color = "goldenrod",
-  output_file = "trisha-stimuli-pngs/garden_space_dot.png"
+  color = "chocolate3",
+  output_file = "trisha-stimuli-pngs/garden_dot_space.png"
 )
 ```
 
@@ -557,33 +611,33 @@ create_lollipop_chart(
   data = library_data,
   category_col = age_range,
   value_col = avg_books_per_visit,
-  title = "Average Books Checked Out per Visit by Age Group",
-  y_label = "Books \n per Visit",
-  y_break_interval = 1,
+  title = "Average Books Checked Out\nper Visit by Age Group",
+  y_label = "Avg. Books/Visit",
+  #y_break_interval = 1,
   color = "dodgerblue4",
-  output_file = "trisha-stimuli-pngs/library_books_lollipop.png"
+  output_file = "trisha-stimuli-pngs/library_lollipop_books.png"
 )
 
 create_bar_chart(
   data = library_data,
   category_col = age_range,
   value_col = avg_books_per_visit,
-  title = "Average Books Checked Out per Visit by Age Group",
-  y_label = "Books per\nVisit",
+  title = "Average Books Checked Out\nper Visit by Age Group",
+  y_label = "Avg.\nBooks/Visit",
   y_break_interval = 1,
   color = "dodgerblue4",
-  output_file = "trisha-stimuli-pngs/library_books_bar.png"
+  output_file = "trisha-stimuli-pngs/library_bar_books.png"
 )
 
 create_dot_plot(
   data = library_data,
   category_col = age_range,
   value_col = avg_books_per_visit,
-  title = "Average Books Checked Out per Visit by Age Group",
-  y_label = "Books\nper Visit",
-  y_break_interval = 1,
+  title = "Average Books Checked Out\nper Visit by Age Group",
+  y_label = "Avg. Books/Visit",
+  ##y_break_interval = 1,
   color = "dodgerblue4",
-  output_file = "trisha-stimuli-pngs/library_books_dot.png"
+  output_file = "trisha-stimuli-pngs/library_dot_books.png"
 )
 
 # Monthly Visits - 3 charts
@@ -593,9 +647,9 @@ create_lollipop_chart(
   value_col = monthly_visits,
   title = "Total Monthly Library Visits by Age Group",
   y_label = "Monthly\nVisits",
-  y_break_interval = 50,
+  y_break_interval = 100,
   color = "dodgerblue4",
-  output_file = "trisha-stimuli-pngs/library_monthly_lollipop.png"
+  output_file = "trisha-stimuli-pngs/library_lollipop_monthly.png"
 )
 
 create_bar_chart(
@@ -604,9 +658,9 @@ create_bar_chart(
   value_col = monthly_visits,
   title = "Total Monthly Library Visits by Age Group",
   y_label = "Monthly\nVisits",
-  y_break_interval = 50,
+  y_break_interval = 100,
   color = "dodgerblue4",
-  output_file = "trisha-stimuli-pngs/library_monthly_bar.png"
+  output_file = "trisha-stimuli-pngs/library_bar_monthly.png"
 )
 
 create_dot_plot(
@@ -615,48 +669,48 @@ create_dot_plot(
   value_col = monthly_visits,
   title = "Total Monthly Library Visits by Age Group",
   y_label = "Monthly\nVisits",
-  y_break_interval = 50,
+  y_break_interval = 100,
   color = "dodgerblue4",
-  output_file = "trisha-stimuli-pngs/library_monthly_dot.png"
+  output_file = "trisha-stimuli-pngs/library_dot_monthly.png"
 )
 
 # Total Annual Checkouts - 3 charts
 create_lollipop_chart(
-  data = library_data,
+  data = library_data |> mutate(total_annual_checkouts = total_annual_checkouts/10),
   category_col = age_range,
-  value_col = total_annual_checkouts,
+  value_col = total_annual_checkouts, 
   title = "Total Annual Book Checkouts by Age Group",
   y_label = "Annual\nCheckouts",
-  y_break_interval = 5000,
+  y_break_interval = 400,
   color = "dodgerblue4",
-  output_file = "trisha-stimuli-pngs/library_annual_lollipop.png"
+  output_file = "trisha-stimuli-pngs/library_lollipop_annual.png"
 )
 
 create_bar_chart(
-  data = library_data,
+  data = library_data |> mutate(total_annual_checkouts = total_annual_checkouts/10),
   category_col = age_range,
   value_col = total_annual_checkouts,
   title = "Total Annual Book Checkouts by Age Group",
   y_label = "Annual\nCheckouts",
-  y_break_interval = 5000,
+  y_break_interval = 400,
   color = "dodgerblue4",
-  output_file = "trisha-stimuli-pngs/library_annual_bar.png"
+  output_file = "trisha-stimuli-pngs/library_bar_annual.png"
 )
 
 create_dot_plot(
-  data = library_data,
+  data = library_data |> mutate(total_annual_checkouts = total_annual_checkouts/10),
   category_col = age_range,
   value_col = total_annual_checkouts,
   title = "Total Annual Book Checkouts by Age Group",
   y_label = "Annual\nCheckouts",
-  y_break_interval = 5000,
+  y_break_interval = 400,
   color = "dodgerblue4",
-  output_file = "trisha-stimuli-pngs/library_annual_dot.png"
+  output_file = "trisha-stimuli-pngs/library_dot_annual.png"
 )
 ```
 
 
-```{r}
+
 #| label: library-stimuli
 
 # Number of Cardholders - 3 charts
@@ -666,7 +720,7 @@ create_lollipop_chart(
   value_col = num_cardholders,
   title = "Number of Library Cardholders by Age Group",
   y_label = "Number of\nCardholders",
-  y_break_interval = 500,
+  #y_break_interval = 500,
   color = "dodgerblue4",
   output_file = "trisha-stimuli-pngs/library_cardholders_lollipop.png"
 )
@@ -677,7 +731,7 @@ create_bar_chart(
   value_col = num_cardholders,
   title = "Number of Library Cardholders by Age Group",
   y_label = "Number of\nCardholders",
-  y_break_interval = 500,
+  #y_break_interval = 500,
   color = "dodgerblue4",
   output_file = "trisha-stimuli-pngs/library_cardholders_bar.png"
 )
@@ -688,7 +742,7 @@ create_dot_plot(
   value_col = num_cardholders,
   title = "Number of Library Cardholders by Age Group",
   y_label = "Number of\nCardholders",
-  y_break_interval = 500,
+  #y_break_interval = 500,
   color = "dodgerblue4",
   output_file = "trisha-stimuli-pngs/library_cardholders_dot.png"
 )
@@ -700,7 +754,7 @@ create_lollipop_chart(
   value_col = avg_books_checked_out,
   title = "Average Library Books Checked Out by Age Group",
   y_label = "Average Books\nChecked Out",
-  y_break_interval = 1,
+  #y_break_interval = 1,
   color = "dodgerblue4",
   output_file = "trisha-stimuli-pngs/library_books_lollipop.png"
 )
@@ -711,7 +765,7 @@ create_bar_chart(
   value_col = avg_books_checked_out,
   title = "Average Library Books Checked Out by Age Group",
   y_label = "Average Books\nChecked Out",
-  y_break_interval = 1,
+  #y_break_interval = 1,
   color = "dodgerblue4",
   output_file = "trisha-stimuli-pngs/library_books_bar.png"
 )
@@ -722,7 +776,7 @@ create_dot_plot(
   value_col = avg_books_checked_out,
   title = "Average Library Books Checked Out by Age Group",
   y_label = "Average Books\nChecked Out",
-  y_break_interval = 1,
+  #y_break_interval = 1,
   color = "dodgerblue4",
   output_file = "trisha-stimuli-pngs/library_books_dot.png"
 )
@@ -736,7 +790,7 @@ create_lollipop_chart(
   value_col = digital_usage_rate,
   title = "Proportion of Readers Using E-books by Age Group",
   y_label = "Proportion",
-  y_break_interval = 50,
+  #y_break_interval = 50,
   color = "dodgerblue4",
   output_file = "trisha-stimuli-pngs/library_ebooks_lollipop.png"
 )
@@ -747,7 +801,7 @@ create_bar_chart(
   value_col = digital_usage_rate,
   title = "Proportion of Readers Using E-books by Age Group",
   y_label = "Proportion",
-  y_break_interval = 50,
+  #y_break_interval = 50,
   color = "dodgerblue4",
   output_file = "trisha-stimuli-pngs/library_ebooks_bar.png"
 )
@@ -758,11 +812,11 @@ create_dot_plot(
   value_col = digital_usage_rate,
   title = "Proportion of Readers Using E-books by Age Group",
   y_label = "Proportion",
-  y_break_interval = 50,
+  #y_break_interval = 50,
   color = "dodgerblue4",
   output_file = "trisha-stimuli-pngs/library_ebooks_dot.png"
 )
-```
+
 
 
 ## STATE FAIR DATA
@@ -775,33 +829,36 @@ create_lollipop_chart(
   data = fair_data,
   category_col = visitor_type,
   value_col = avg_amount_spent,
-  title = "Average Dollars Spent by Each Visitor Type",
-  y_label = "Average Dollar\nAmount Spent",
-  y_break_interval = 100,
-  color = "plum3",
-  output_file = "trisha-stimuli-pngs/fair_spending_lollipop.png"
+  title = "Average Dollars Spent\nby Visitor Type",
+  y_label = "Avg. $\nAmount Spent",
+  y_break_interval = 200,
+  y_axis_labels = scales::label_dollar(),
+  color = "steelblue",
+  output_file = "trisha-stimuli-pngs/fair_lollipop_spending.png"
 )
 
 create_bar_chart(
   data = fair_data,
   category_col = visitor_type,
   value_col = avg_amount_spent,
-  title = "Average Dollars Spent by Each Visitor Type",
-  y_label = "Average Dollar\nAmount Spent",
-  y_break_interval = 100,
-  color = "plum3",
-  output_file = "trisha-stimuli-pngs/fair_spending_bar.png"
+  title = "Average Dollars Spent\nby Visitor Type",
+  y_label = "Avg. $\nAmount Spent",
+  y_break_interval = 200,
+  y_axis_labels = scales::label_dollar(),
+  color = "steelblue",
+  output_file = "trisha-stimuli-pngs/fair_bar_spending.png"
 )
 
 create_dot_plot(
   data = fair_data,
   category_col = visitor_type,
   value_col = avg_amount_spent,
-  title = "Average Dollars Spent by Each Visitor Type",
-  y_label = "Average Dollar\nAmount Spent",
-  y_break_interval = 100,
-  color = "plum3",
-  output_file = "trisha-stimuli-pngs/fair_spending_dot.png"
+  title = "Average Dollars Spent\nby Visitor Type",
+  y_label = "Avg. $\nAmount Spent",
+  y_break_interval = 200,
+  y_axis_labels = scales::label_dollar(),
+  color = "steelblue",
+  output_file = "trisha-stimuli-pngs/fair_dot_spending.png"
 )
 
 # All-Days Attendance - 3 charts
@@ -809,33 +866,33 @@ create_lollipop_chart(
   data = fair_data,
   category_col = visitor_type,
   value_col = pct_attending_all_days,
-  title = "% Visitors Who Attended All Days of the Fair",
-  y_label = "% Attending\nAll Fair Days",
+  title = "Percent Visitors Who Attended All Days\nof the Fair by Visitor Type",
+  y_label = "%\nAttending",
   y_break_interval = 20,
-  color = "plum3",
-  output_file = "trisha-stimuli-pngs/fair_attendance_lollipop.png"
+  color = "steelblue",
+  output_file = "trisha-stimuli-pngs/fair_lollipop_attendance.png"
 )
 
 create_bar_chart(
   data = fair_data,
   category_col = visitor_type,
   value_col = pct_attending_all_days,
-  title = "% Visitors Who Attended All Days of the Fair",
-  y_label = "% Attending\nAll Fair Days",
+  title = "Percent Visitors Who Attended All Days\nof the Fair by Visitor Type",
+  y_label = "%\nAttending",
   y_break_interval = 20,
-  color = "plum3",
-  output_file = "trisha-stimuli-pngs/fair_attendance_bar.png"
+  color = "steelblue",
+  output_file = "trisha-stimuli-pngs/fair_bar_attendance.png"
 )
 
 create_dot_plot(
   data = fair_data,
   category_col = visitor_type,
   value_col = pct_attending_all_days,
-  title = "% Visitors Who Attended All Days of the Fair",
-  y_label = "% Attending\nAll Fair Days",
+  title = "Percent Visitors Who Attended All Days\nof the Fair by Visitor Type",
+  y_label = "%\nAttending",
   y_break_interval = 20,
-  color = "plum3",
-  output_file = "trisha-stimuli-pngs/fair_attendance_dot.png"
+  color = "steelblue",
+  output_file = "trisha-stimuli-pngs/fair_dot_attendance.png"
 )
 
 # Ticket Price - 3 charts
@@ -844,10 +901,11 @@ create_lollipop_chart(
   category_col = visitor_type,
   value_col = ticket_price,
   title = "Ticket Price by Visitor Type",
-  y_label = "Ticket Price",
+  y_label = "Ticket\nPrice",
   y_break_interval = 20,
-  color = "plum3",
-  output_file = "trisha-stimuli-pngs/fair_ticket_lollipop.png"
+  y_axis_labels = scales::label_dollar(),
+  color = "steelblue",
+  output_file = "trisha-stimuli-pngs/fair_lollipop_ticket.png"
 )
 
 create_bar_chart(
@@ -855,10 +913,11 @@ create_bar_chart(
   category_col = visitor_type,
   value_col = ticket_price,
   title = "Ticket Price by Visitor Type",
-  y_label = "Ticket Price",
+  y_label = "Ticket\nPrice",
   y_break_interval = 20,
-  color = "plum3",
-  output_file = "trisha-stimuli-pngs/fair_ticket_bar.png"
+  y_axis_labels = scales::label_dollar(),
+  color = "steelblue",
+  output_file = "trisha-stimuli-pngs/fair_bar_ticket.png"
 )
 
 create_dot_plot(
@@ -866,10 +925,11 @@ create_dot_plot(
   category_col = visitor_type,
   value_col = ticket_price,
   title = "Ticket Price by Visitor Type",
-  y_label = "Ticket Price",
+  y_label = "Ticket\nPrice",
   y_break_interval = 20,
-  color = "plum3",
-  output_file = "trisha-stimuli-pngs/fair_ticket_dot.png"
+  y_axis_labels = scales::label_dollar(),
+  color = "steelblue",
+  output_file = "trisha-stimuli-pngs/fair_dot_ticket.png"
 )
 ```
 
@@ -886,9 +946,9 @@ create_lollipop_chart(
   value_col = balance_thousands,
   title = "Average Account Balance by Client Type",
   y_label = "Average Balance\n(Thousands)",
-  y_break_interval = 5,
-  color = "darkolivegreen3",
-  output_file = "trisha-stimuli-pngs/credit_balance_lollipop.png"
+  y_break_interval = 10,
+  color = "darkolivegreen",
+  output_file = "trisha-stimuli-pngs/credit_lollipop_balance.png"
 )
 
 create_bar_chart(
@@ -897,9 +957,9 @@ create_bar_chart(
   value_col = balance_thousands,
   title = "Average Account Balance by Client Type",
   y_label = "Average Balance\n(Thousands)",
-  y_break_interval = 5,
-  color = "darkolivegreen3",
-  output_file = "trisha-stimuli-pngs/credit_balance_bar.png"
+  y_break_interval = 10,
+  color = "darkolivegreen",
+  output_file = "trisha-stimuli-pngs/credit_bar_balance.png"
 )
 
 create_dot_plot(
@@ -908,9 +968,9 @@ create_dot_plot(
   value_col = balance_thousands,
   title = "Average Account Balance by Client Type",
   y_label = "Average Balance\n(Thousands)",
-  y_break_interval = 5,
-  color = "darkolivegreen3",
-  output_file = "trisha-stimuli-pngs/credit_balance_dot.png"
+  y_break_interval = 10,
+  color = "darkolivegreen",
+  output_file = "trisha-stimuli-pngs/credit_dot_balance.png"
 )
 
 # Churn Rate (Annual Rate of Canceled Accounts) - 3 charts
@@ -922,8 +982,8 @@ create_lollipop_chart(
   title = "Annual Rate of Canceled Accounts by Client Type",
   y_label = "Rate of Canceled\nAccounts (%)",
   y_break_interval = 5,
-  color = "darkolivegreen3",
-  output_file = "trisha-stimuli-pngs/credit_churn_lollipop.png"
+  color = "darkolivegreen",
+  output_file = "trisha-stimuli-pngs/credit_lollipop_churn.png"
 )
 
 create_bar_chart(
@@ -933,8 +993,8 @@ create_bar_chart(
   title = "Annual Rate of Canceled Accounts by Client Type",
   y_label = "Rate of Canceled\nAccounts (%)",
   y_break_interval = 5,
-  color = "darkolivegreen3",
-  output_file = "trisha-stimuli-pngs/credit_churn_bar.png"
+  color = "darkolivegreen",
+  output_file = "trisha-stimuli-pngs/credit_bar_churn.png"
 )
 
 create_dot_plot(
@@ -944,22 +1004,120 @@ create_dot_plot(
   title = "Annual Rate of Canceled Accounts by Client Type",
   y_label = "Rate of Canceled\nAccounts (%)",
   y_break_interval = 5,
-  color = "darkolivegreen3",
-  output_file = "trisha-stimuli-pngs/credit_churn_dot.png"
+  color = "darkolivegreen",
+  output_file = "trisha-stimuli-pngs/credit_dot_churn.png"
 )
 
 # Number of Accounts - 3 charts (written out in full thousands)
 # Number of Accounts - 3 charts (in thousands with larger intervals)
-create_lollipop_chart(
-  data = credit_data |> mutate(customers_thousands = num_customers / 1000),
-  category_col = category,
-  value_col = customers_thousands,
-  title = "Number of Accounts by Client Type",
-  y_label = "Number of\nAccounts\n(Thousands)",
-  y_break_interval = 20,
-  color = "darkolivegreen3",
-  output_file = "trisha-stimuli-pngs/credit_customers_lollipop.png"
-)
+data <- credit_data |> mutate(customers_thousands = num_customers / 1000)
+category_col = data$category
+value_col = data$customers_thousands
+title = "Number of Accounts by Client Type"
+y_label = "Number of\nAccounts\n(Thousands)"
+y_break_interval = 30
+color = "darkolivegreen"
+output_file = "trisha-stimuli-pngs/credit_lollipop_customers.png"
+
+# Set the parameters
+data <- credit_data |> mutate(customers_thousands = num_customers / 1000)
+category_col <- "category"
+value_col <- "customers_thousands"
+title <- "Number of Accounts by Client Type"
+y_label <- "Number of\nAccounts"
+color <- "darkolivegreen"
+output_file <- "trisha-stimuli-pngs/credit_lollipop_customers.png"
+category_order <- NULL
+ymin <- NULL
+ymax <- NULL
+y_break_interval <- 30
+x_text <- 14
+y_text <- 14
+title_size <- 16
+
+# Prepare the data
+plot_data <- data |>
+  select(category = category_col, value = value_col)
+
+# Set category order if provided
+if (!is.null(category_order)) {
+  plot_data <- plot_data |>
+    mutate(category = factor(category, levels = category_order))
+}
+
+# Calculate y-axis upper limit
+if (is.null(ymax)) {
+  data_ymax <- max(plot_data$value, na.rm = TRUE)
+  if (!is.null(y_break_interval)) {
+    yupper <- ceiling(data_ymax / y_break_interval) * y_break_interval
+  } else {
+    yupper <- data_ymax
+  }
+} else {
+  yupper <- ymax  # Use the provided max
+}
+
+# Create the plot
+p <- ggplot(plot_data, aes(x = category, y = value)) +
+  geom_segment(aes(xend = category, yend = 0),
+               color = color, linewidth = 2.3) +
+  geom_point(color = color, size = 9) +
+  labs(
+    title = title,
+    x = NULL,
+    y = NULL
+  ) +
+  scale_y_continuous(
+    limits = c(0, yupper),
+    breaks = seq(0, yupper, by = y_break_interval),
+    labels = function(x) ifelse(x == 0, "0", paste0(x, "k")),
+    expand = expansion(mult = c(0, 0.05))
+  ) +
+  
+) +
+  theme_classic() +
+  theme(
+    plot.title = element_text(
+      size = title_size,
+      face = "bold", 
+      vjust = 1,
+      hjust = 0.5, 
+      margin = margin(t = -20, b = 60)
+    ),
+    plot.margin = margin(45, 40, 25, 40),
+    axis.text.x = element_text(size = x_text, color = "black"),
+    axis.text.y = element_text(size = y_text, color = "black"),
+    axis.ticks.x = element_blank(),
+    axis.ticks.y = element_line(color = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  ) +
+  annotation_custom(
+    grob = textGrob(
+      label = y_label, 
+      hjust = 0.5,
+      vjust = -0.9,
+      gp = gpar(fontsize = 14)
+    ),
+    ymin = yupper,
+    ymax = yupper,
+    xmin = 0.5,
+    xmax = 0.5
+  ) +
+  coord_cartesian(clip = "off")
+
+# Build the plot and turn off clipping
+gt <- ggplot_gtable(ggplot_build(p))
+gt$layout$clip[gt$layout$name == "panel"] <- "off"
+
+# Save if output file specified
+if (!is.null(output_file)) {
+  ggsave(output_file, plot = gt, device = "png", width = 8, height = 5)
+}
+
+# Draw and return
+grid.draw(gt)
+invisible(gt)
 
 create_bar_chart(
   data = credit_data |> mutate(customers_thousands = num_customers / 1000),
@@ -967,10 +1125,92 @@ create_bar_chart(
   value_col = customers_thousands,
   title = "Number of Accounts by Client Type",
   y_label = "Number of\nAccounts\n(Thousands)",
-  y_break_interval = 20,
-  color = "darkolivegreen3",
-  output_file = "trisha-stimuli-pngs/credit_customers_bar.png"
+  #y_break_interval = 20,
+  color = "darkolivegreen",
+  output_file = "trisha-stimuli-pngs/credit_bar_customers.png"
 )
+
+output_file <- "trisha-stimuli-pngs/credit_bar_customers.png"
+
+# Prepare the data
+plot_data <- data |>
+  select(category = category_col, value = value_col)
+
+# Set category order if provided
+if (!is.null(category_order)) {
+  plot_data <- plot_data |>
+    mutate(category = factor(category, levels = category_order))
+}
+
+# Calculate y-axis upper limit
+if (is.null(ymax)) {
+  data_ymax <- max(plot_data$value, na.rm = TRUE)
+  if (!is.null(y_break_interval)) {
+    yupper <- ceiling(data_ymax / y_break_interval) * y_break_interval
+  } else {
+    yupper <- data_ymax
+  }
+} else {
+  yupper <- ymax  # Use the provided max
+}
+
+# Create the plot
+p <- ggplot(plot_data, aes(x = category, y = value)) +
+  geom_col(fill = color, width = 0.4) +
+  labs(
+    title = title,
+    x = NULL,
+    y = NULL
+  ) +
+  scale_y_continuous(
+    limits = c(0, yupper),
+    breaks = seq(0, yupper, by = y_break_interval),
+    labels = function(x) ifelse(x == 0, "0", paste0(x, "k")),
+    expand = expansion(mult = c(0, 0.05))
+  ) +
+  theme_classic() +
+  theme(
+    plot.title = element_text(
+      size = title_size,
+      face = "bold", 
+      vjust = 1,
+      hjust = 0.5, 
+      margin = margin(t = -20, b = 60)
+    ),
+    plot.margin = margin(45, 40, 25, 40),
+    axis.text.x = element_text(size = x_text, color = "black"),
+    axis.text.y = element_text(size = y_text, color = "black"),
+    axis.ticks.x = element_blank(),
+    axis.ticks.y = element_line(color = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  ) +
+  annotation_custom(
+    grob = textGrob(
+      label = y_label, 
+      hjust = 0.5,
+      vjust = -0.9,
+      gp = gpar(fontsize = 14)
+    ),
+    ymin = yupper,
+    ymax = yupper,
+    xmin = 0.5,
+    xmax = 0.5
+  ) +
+  coord_cartesian(clip = "off")
+
+# Build the plot and turn off clipping
+gt <- ggplot_gtable(ggplot_build(p))
+gt$layout$clip[gt$layout$name == "panel"] <- "off"
+
+# Save if output file specified
+if (!is.null(output_file)) {
+  ggsave(output_file, plot = gt, device = "png", width = 8, height = 5)
+}
+
+# Draw and return
+grid.draw(gt)
+invisible(gt)
 
 create_dot_plot(
   data = credit_data |> mutate(customers_thousands = num_customers / 1000),
@@ -978,9 +1218,9 @@ create_dot_plot(
   value_col = customers_thousands,
   title = "Number of Accounts by Client Type",
   y_label = "Number of\nAccounts\n(Thousands)",
-  y_break_interval = 20,
-  color = "darkolivegreen3",
-  output_file = "trisha-stimuli-pngs/credit_customers_dot.png"
+  #y_break_interval = 20,
+  color = "darkolivegreen",
+  output_file = "trisha-stimuli-pngs/credit_dot_customers.png"
 )
 ```
 
@@ -999,7 +1239,7 @@ create_lollipop_chart(
   y_label = "Average Price\n(Dollars)",
   y_break_interval = 2,
   color = "maroon",
-  output_file = "trisha-stimuli-pngs/school_price_lollipop.png"
+  output_file = "trisha-stimuli-pngs/school_lollipop_price.png"
 )
 
 create_bar_chart(
@@ -1010,7 +1250,7 @@ create_bar_chart(
   y_label = "Average Price\n(Dollars)",
   y_break_interval = 2,
   color = "maroon",
-  output_file = "trisha-stimuli-pngs/school_price_bar.png"
+  output_file = "trisha-stimuli-pngs/school_bar_price.png"
 )
 
 create_dot_plot(
@@ -1021,7 +1261,7 @@ create_dot_plot(
   y_label = "Average Price\n(Dollars)",
   y_break_interval = 2,
   color = "maroon",
-  output_file = "trisha-stimuli-pngs/school_price_dot.png"
+  output_file = "trisha-stimuli-pngs/school_dot_price.png"
 )
 
 # Monthly Sales - 3 charts
@@ -1031,9 +1271,9 @@ create_lollipop_chart(
   value_col = monthly_sales,
   title = "Monthly Sales by Notebook Type",
   y_label = "Monthly Sales\n(Units)",
-  y_break_interval = 100,
+  y_break_interval = 200,
   color = "maroon",
-  output_file = "trisha-stimuli-pngs/school_sales_lollipop.png"
+  output_file = "trisha-stimuli-pngs/school_lollipop_sales.png"
 )
 
 create_bar_chart(
@@ -1042,9 +1282,9 @@ create_bar_chart(
   value_col = monthly_sales,
   title = "Monthly Sales by Notebook Type",
   y_label = "Monthly Sales\n(Units)",
-  y_break_interval = 100,
+  y_break_interval = 200,
   color = "maroon",
-  output_file = "trisha-stimuli-pngs/school_sales_bar.png"
+  output_file = "trisha-stimuli-pngs/school_bar_sales.png"
 )
 
 create_dot_plot(
@@ -1053,9 +1293,9 @@ create_dot_plot(
   value_col = monthly_sales,
   title = "Monthly Sales by Notebook Type",
   y_label = "Monthly Sales\n(Units)",
-  y_break_interval = 100,
+  y_break_interval = 200,
   color = "maroon",
-  output_file = "trisha-stimuli-pngs/school_sales_dot.png"
+  output_file = "trisha-stimuli-pngs/school_dot_sales.png"
 )
 
 # Return Rate - 3 charts
@@ -1063,33 +1303,33 @@ create_lollipop_chart(
   data = school_supplies_data,
   category_col = notebook_type,
   value_col = return_rate_pct,
-  title = "% of Purchases Returned by Notebook Type",
+  title = "Percent of Purchases\nReturned by Notebook Type",
   y_label = "% of Purchases\nReturned",
-  y_break_interval = 2,
+  y_break_interval = 3,
   color = "maroon",
-  output_file = "trisha-stimuli-pngs/school_returns_lollipop.png"
+  output_file = "trisha-stimuli-pngs/school_lollipop_returns.png"
 )
 
 create_bar_chart(
   data = school_supplies_data,
   category_col = notebook_type,
   value_col = return_rate_pct,
-  title = "% of Purchases Returned by Notebook Type",
+  title = "Percent of Purchases\nReturned by Notebook Type",
   y_label = "% of Purchases\nReturned",
-  y_break_interval = 2,
+  y_break_interval = 3,
   color = "maroon",
-  output_file = "trisha-stimuli-pngs/school_returns_bar.png"
+  output_file = "trisha-stimuli-pngs/school_bar_returns.png"
 )
 
 create_dot_plot(
   data = school_supplies_data,
   category_col = notebook_type,
   value_col = return_rate_pct,
-  title = "% of Purchases Returned by Notebook Type",
+  title = "Percent of Purchases\nReturned by Notebook Type",
   y_label = "% of Purchases\nReturned",
-  y_break_interval = 2,
+  y_break_interval = 3,
   color = "maroon",
-  output_file = "trisha-stimuli-pngs/school_returns_dot.png"
+  output_file = "trisha-stimuli-pngs/school_dot_returns.png"
 )
 ```
 
